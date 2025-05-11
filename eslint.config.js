@@ -15,7 +15,7 @@ export default tseslint.config(
   ...fixupConfigRules(flatCompat.extends('eslint-config-airbnb')),
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
-    files: ['**/*.{ts,tsx,js,js}'],
+    files: ['**/*.{ts,tsx,js}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -24,6 +24,11 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       prettier: eslintPluginPrettier,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {},
+      },
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
