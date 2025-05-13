@@ -1,14 +1,15 @@
 import { Root, Control, Field, Label, Message, Submit } from '@radix-ui/react-form';
-import { Button, Dialog, Flex, Select, Text, AlertDialog } from '@radix-ui/themes';
+import { Button, Dialog, Flex, Select, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 
 import { PlusIcon } from '@/shared/assets/icons/PlusIcon';
 import { addRecord } from '@/shared/lib/indexeddb';
+import { useErrorDialog } from '@/shared/providers/ErrorDialogProvider';
 
 export const AddButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const { showError } = useErrorDialog();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,12 +30,10 @@ export const AddButton = () => {
       form.reset();
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        showError(error.message);
       } else {
-        setErrorMessage('Ошибка при сохранении записи');
+        showError('Ошибка при сохранении записи');
       }
-
-      setAlertOpen(true);
     }
   };
 
@@ -90,22 +89,6 @@ export const AddButton = () => {
           </Root>
         </Dialog.Content>
       </Dialog.Root>
-
-      <AlertDialog.Root open={alertOpen} onOpenChange={setAlertOpen}>
-        <AlertDialog.Content>
-          <AlertDialog.Title>Ошибка</AlertDialog.Title>
-          <AlertDialog.Description>
-            {errorMessage || 'Произошла неизвестная ошибка'}
-          </AlertDialog.Description>
-          <Flex gap="3" mt="4" justify="end">
-            <AlertDialog.Action>
-              <Button size="4" onClick={() => setAlertOpen(false)}>
-                Закрыть
-              </Button>
-            </AlertDialog.Action>
-          </Flex>
-        </AlertDialog.Content>
-      </AlertDialog.Root>
     </>
   );
 };
