@@ -1,16 +1,12 @@
 import { openDB } from 'idb';
 import type { DBSchema } from 'idb';
 
-interface Record {
-  id?: number;
-  datetime: string;
-  dose: string;
-}
+import type { RecordType } from '../types/Record';
 
 interface MyDB extends DBSchema {
   records: {
     key: number;
-    value: Record;
+    value: RecordType;
     indexes: { 'by-datetime': string };
   };
 }
@@ -26,7 +22,7 @@ export const getDb = async () =>
     },
   });
 
-export const addRecord = async (record: Record) => {
+export const addRecord = async (record: RecordType) => {
   const db = await getDb();
   await db.add('records', record);
 };
