@@ -26,3 +26,10 @@ export const addRecord = async (record: RecordType) => {
   const db = await getDb();
   await db.add('records', record);
 };
+
+export const getRecords = async () => {
+  const db = await getDb();
+  const records = await db.getAll('records');
+
+  return records;
+};

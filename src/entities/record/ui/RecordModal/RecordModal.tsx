@@ -1,7 +1,6 @@
 import { Dialog } from '@radix-ui/themes';
 
-import { addRecord } from '@/shared/lib/indexeddb';
-import { useErrorDialog } from '@/shared/providers/ErrorDialogProvider';
+import { useRecords } from '@/shared/providers/RecordsProvider';
 import type { RecordType } from '@/shared/types/Record';
 
 import { RecordForm } from '../RecordForm';
@@ -14,19 +13,11 @@ type Props = {
 
 export const RecordModal = (props: Props) => {
   const { isOpen, onOpenChange, title } = props;
-  const { showError } = useErrorDialog();
+  const { addRecord } = useRecords();
 
   const handleSubmit = async (record: RecordType) => {
-    try {
-      await addRecord(record);
-      onOpenChange(false);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showError(error.message);
-      } else {
-        showError('Ошибка при сохранении записи');
-      }
-    }
+    await addRecord(record);
+    onOpenChange(false);
   };
 
   return (
