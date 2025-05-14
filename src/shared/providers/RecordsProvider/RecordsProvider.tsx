@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { getRecords, addRecord as addRecordToDb } from '@/shared/lib/indexeddb';
 import type { RecordType } from '@/shared/types/Record';
 
+import { getRecords, addRecord as addRecordToDb } from './lib/indexeddb';
 import { RecordsContext } from './RecordsContext';
 import { useErrorDialog } from '../ErrorDialogProvider';
 

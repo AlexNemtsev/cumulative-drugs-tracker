@@ -1,7 +1,7 @@
 import { openDB } from 'idb';
 import type { DBSchema } from 'idb';
 
-import type { RecordType } from '../types/Record';
+import type { RecordType } from '../../../types/Record';
 
 interface MyDB extends DBSchema {
   records: {
