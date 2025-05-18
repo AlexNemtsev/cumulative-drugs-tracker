@@ -12,8 +12,15 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
 
   const loadRecords = async () => {
     try {
-      const allRecords = await getRecords();
-      setRecords(allRecords);
+      const dbRecords = await getRecords();
+      const sortedRecords = dbRecords.toSorted((a, b) => {
+        const aTime = new Date(a.datetime);
+        const bTime = new Date(b.datetime);
+
+        return bTime.getTime() - aTime.getTime();
+      });
+
+      setRecords(sortedRecords);
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError(error.message);

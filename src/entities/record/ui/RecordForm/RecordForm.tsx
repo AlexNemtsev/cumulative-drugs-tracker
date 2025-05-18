@@ -2,13 +2,17 @@ import { Control, Field, Label, Message, Root, Submit } from '@radix-ui/react-fo
 import { Button, Flex, Select, Text } from '@radix-ui/themes';
 
 import type { RecordType } from '@/shared/types/Record';
+import { DateTime } from '@/shared/ui/DateTime';
+
+type Value = Omit<RecordType, 'id'>;
 
 type Props = {
-  onSubmit: (data: RecordType) => void;
+  onSubmit: (value: Value) => void;
+  formValue?: Value;
 };
 
 export const RecordForm = (props: Props) => {
-  const { onSubmit } = props;
+  const { onSubmit, formValue } = props;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,7 +40,7 @@ export const RecordForm = (props: Props) => {
               <Text size="4">Дата и время:</Text>
             </Label>
             <Control asChild>
-              <input type="datetime-local" required name="datetime" />
+              <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
             </Control>
           </Flex>
           <Message match="valueMissing">
@@ -50,7 +54,7 @@ export const RecordForm = (props: Props) => {
               <Text size="4">Дозировка, мг:</Text>
             </Label>
             <Control asChild>
-              <Select.Root name="dose" defaultValue="16" size="3">
+              <Select.Root name="dose" defaultValue={formValue ? formValue.dose : '16'} size="3">
                 <Select.Trigger />
                 <Select.Content>
                   <Select.Item value="8">8</Select.Item>
