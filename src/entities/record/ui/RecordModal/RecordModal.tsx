@@ -1,5 +1,6 @@
 import { Dialog } from '@radix-ui/themes';
 
+import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
 import { useRecords } from '@/shared/providers/RecordsProvider';
 import type { RecordType } from '@/shared/types/Record';
 
@@ -20,6 +21,11 @@ export const RecordModal = (props: Props) => {
     onOpenChange(false);
   };
 
+  const formValue: RecordType = {
+    dose: '16',
+    datetime: toDateTimeLocal(new Date()),
+  };
+
   return (
     isOpen && (
       <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
@@ -29,7 +35,7 @@ export const RecordModal = (props: Props) => {
           }}
         >
           <Dialog.Title>{title}</Dialog.Title>
-          <RecordForm onSubmit={handleSubmit} />
+          <RecordForm onSubmit={handleSubmit} formValue={formValue} />
         </Dialog.Content>
       </Dialog.Root>
     )
