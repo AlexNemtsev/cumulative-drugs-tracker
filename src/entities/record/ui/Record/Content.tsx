@@ -1,4 +1,4 @@
-import { Box, Flex, Separator, Text } from '@radix-ui/themes';
+import { Box, ContextMenu, Flex, Separator, Text } from '@radix-ui/themes';
 
 import type { RecordType } from '@/shared/types/Record';
 
@@ -16,25 +16,27 @@ export const Content = (props: Props) => {
   const date = new Date(datetime);
 
   return (
-    <Box className={styles.container}>
-      <Flex direction="column" gap="2">
-        <Text size="6" weight="medium">
-          {date.toLocaleDateString('ru-RU')}
-        </Text>
-        <Flex justify="between">
+    <ContextMenu.Trigger>
+      <Box className={styles.container}>
+        <Flex direction="column" gap="2">
           <Text size="6" weight="medium">
-            {date.toLocaleTimeString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
+            {date.toLocaleDateString('ru-RU')}
           </Text>
-          <Text size="6" weight="medium">
-            {dose} мг
-          </Text>
+          <Flex justify="between">
+            <Text size="6" weight="medium">
+              {date.toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              })}
+            </Text>
+            <Text size="6" weight="medium">
+              {dose} мг
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
-      <Separator size="4" className={styles.separator} />
-    </Box>
+        <Separator size="4" className={styles.separator} />
+      </Box>
+    </ContextMenu.Trigger>
   );
 };

@@ -5,6 +5,7 @@ import type { RecordType } from '@/shared/types/Record';
 
 import { RecordModal } from '../RecordModal';
 import { Content } from './Content';
+import { DeleteDialog } from './DeleteDialog';
 
 type Props = {
   record: Required<RecordType>;
@@ -14,16 +15,18 @@ export const Record = (props: Props) => {
   const { record } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
+
+  const onEditHandler = () => setIsModalOpen(true);
+  const onDeleteHandler = () => setIsDeleteDialogOpened(true);
 
   return (
     <>
       <ContextMenu.Root>
-        <ContextMenu.Trigger>
-          <Content record={record} />
-        </ContextMenu.Trigger>
+        <Content record={record} />
         <ContextMenu.Content size="2">
-          <ContextMenu.Item onSelect={() => setIsModalOpen(true)}>Изменить</ContextMenu.Item>
-          <ContextMenu.Item>Удалить</ContextMenu.Item>
+          <ContextMenu.Item onSelect={onEditHandler}>Изменить</ContextMenu.Item>
+          <ContextMenu.Item onSelect={onDeleteHandler}>Удалить</ContextMenu.Item>
         </ContextMenu.Content>
       </ContextMenu.Root>
       <RecordModal
@@ -32,6 +35,11 @@ export const Record = (props: Props) => {
         title="Изменить запись"
         type="edit"
         record={record}
+      />
+      <DeleteDialog
+        recordId={record.id}
+        isOpen={isDeleteDialogOpened}
+        onOpenChange={setIsDeleteDialogOpened}
       />
     </>
   );

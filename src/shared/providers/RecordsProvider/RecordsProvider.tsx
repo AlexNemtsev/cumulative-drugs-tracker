@@ -6,6 +6,7 @@ import {
   getRecords,
   addRecord as addRecordToDb,
   updateRecord as updateRecordToDb,
+  deleteRecord as deleteRecordFromDb,
 } from './lib/indexeddb';
 import { RecordsContext } from './RecordsContext';
 import { useErrorDialog } from '../ErrorDialogProvider';
@@ -65,8 +66,22 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const deleteRecord = async (recordId: number) => {
+    try {
+      await deleteRecordFromDb(recordId);
+      await loadRecords();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showError(error.message);
+        console.error(error);
+      } else {
+        showError('Ошибка при удалении записи');
+      }
+    }
+  };
+
   const contextValue = useMemo(
-    () => ({ records, addRecord, updateRecord, reload: loadRecords }),
+    () => ({ records, addRecord, updateRecord, deleteRecord, reload: loadRecords }),
     [records]
   );
 
