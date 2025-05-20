@@ -11,7 +11,7 @@ export const Records = () => {
   return records.length ? (
     <ScrollArea type="scroll" className={styles.records}>
       {records.map((record) => (
-        <Record key={record.id} datetime={record.datetime} dose={record.dose} />
+        <Record key={record.id} record={record} />
       ))}
     </ScrollArea>
   ) : (

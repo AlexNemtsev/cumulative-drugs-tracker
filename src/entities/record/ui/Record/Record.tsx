@@ -1,36 +1,46 @@
-import { Box, Flex, Separator, Text } from '@radix-ui/themes';
+import { ContextMenu } from '@radix-ui/themes';
+import { useState } from 'react';
 
 import type { RecordType } from '@/shared/types/Record';
 
-import styles from './Record.module.css';
+import { RecordModal } from '../RecordModal';
+import { Content } from './Content';
+import { DeleteDialog } from './DeleteDialog';
 
-type Props = Omit<RecordType, 'id'>;
+type Props = {
+  record: Required<RecordType>;
+};
 
 export const Record = (props: Props) => {
-  const { datetime, dose } = props;
+  const { record } = props;
 
-  const date = new Date(datetime);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
+
+  const onEditHandler = () => setIsModalOpen(true);
+  const onDeleteHandler = () => setIsDeleteDialogOpened(true);
 
   return (
-    <Box className={styles.container}>
-      <Flex direction="column" gap="2">
-        <Text size="6" weight="medium">
-          {date.toLocaleDateString('ru-RU')}
-        </Text>
-        <Flex justify="between">
-          <Text size="6" weight="medium">
-            {date.toLocaleTimeString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
-          </Text>
-          <Text size="6" weight="medium">
-            {dose} мг
-          </Text>
-        </Flex>
-      </Flex>
-      <Separator size="4" className={styles.separator} />
-    </Box>
+    <>
+      <ContextMenu.Root>
+        <Content record={record} />
+        <ContextMenu.Content size="2">
+          <ContextMenu.Item onSelect={onEditHandler}>Изменить</ContextMenu.Item>
+          <ContextMenu.Item onSelect={onDeleteHandler}>Удалить</ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu.Root>
+      <RecordModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        title="Изменить запись"
+        type="edit"
+        record={record}
+      />
+      <DeleteDialog
+        recordId={record.id}
+        isOpen={isDeleteDialogOpened}
+        onOpenChange={setIsDeleteDialogOpened}
+      />
+    </>
   );
 };

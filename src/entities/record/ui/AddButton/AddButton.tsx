@@ -13,7 +13,12 @@ export const AddButton = () => {
       <Button size="4" onClick={() => setIsModalOpen(true)}>
         <PlusIcon />
       </Button>
-      <RecordModal title="Создать запись" isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
+      <RecordModal
+        type="add"
+        title="Создать запись"
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </>
   );
 };
