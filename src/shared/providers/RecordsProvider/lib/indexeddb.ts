@@ -33,3 +33,13 @@ export const getRecords = async () => {
 
   return records;
 };
+
+export const updateRecord = async (record: Required<RecordType>) => {
+  const db = await getDb();
+  await db.put('records', record);
+};
+
+export const deleteRecord = async (recordId: number) => {
+  const db = await getDb();
+  await db.delete('records', recordId);
+};
