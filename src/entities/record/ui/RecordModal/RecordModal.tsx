@@ -10,21 +10,33 @@ type Props = {
   isOpen?: boolean;
   onOpenChange: (isOpen: boolean) => void;
   title: string;
+  type: 'add' | 'edit';
+  record?: Required<RecordType>;
+};
+
+const defaultRecord = {
+  dose: '16',
+  datetime: toDateTimeLocal(new Date()),
 };
 
 export const RecordModal = (props: Props) => {
-  const { isOpen, onOpenChange, title } = props;
-  const { addRecord } = useRecords();
+  const { isOpen, onOpenChange, title, type, record } = props;
+  const { addRecord, updateRecord } = useRecords();
 
-  const handleSubmit = async (record: RecordType) => {
-    await addRecord(record);
+  const handleUpdate = async (updatedRecord: Omit<RecordType, 'id'>) => {
+    if (record) {
+      await updateRecord({ id: record?.id, ...updatedRecord });
+    }
+  };
+
+  const handleFunction = type === 'add' ? addRecord : handleUpdate;
+
+  const handleSubmit = async (newRecord: Omit<RecordType, 'id'>) => {
+    await handleFunction(newRecord);
     onOpenChange(false);
   };
 
-  const formValue: RecordType = {
-    dose: '16',
-    datetime: toDateTimeLocal(new Date()),
-  };
+  const formValue: RecordType = type === 'edit' && record ? record : defaultRecord;
 
   return (
     isOpen && (

@@ -1,36 +1,38 @@
-import { Box, Flex, Separator, Text } from '@radix-ui/themes';
+import { ContextMenu } from '@radix-ui/themes';
+import { useState } from 'react';
 
 import type { RecordType } from '@/shared/types/Record';
 
-import styles from './Record.module.css';
+import { RecordModal } from '../RecordModal';
+import { Content } from './Content';
 
-type Props = Omit<RecordType, 'id'>;
+type Props = {
+  record: Required<RecordType>;
+};
 
 export const Record = (props: Props) => {
-  const { datetime, dose } = props;
+  const { record } = props;
 
-  const date = new Date(datetime);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <Box className={styles.container}>
-      <Flex direction="column" gap="2">
-        <Text size="6" weight="medium">
-          {date.toLocaleDateString('ru-RU')}
-        </Text>
-        <Flex justify="between">
-          <Text size="6" weight="medium">
-            {date.toLocaleTimeString('ru-RU', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
-          </Text>
-          <Text size="6" weight="medium">
-            {dose} мг
-          </Text>
-        </Flex>
-      </Flex>
-      <Separator size="4" className={styles.separator} />
-    </Box>
+    <>
+      <ContextMenu.Root>
+        <ContextMenu.Trigger>
+          <Content record={record} />
+        </ContextMenu.Trigger>
+        <ContextMenu.Content size="2">
+          <ContextMenu.Item onSelect={() => setIsModalOpen(true)}>Изменить</ContextMenu.Item>
+          <ContextMenu.Item>Удалить</ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu.Root>
+      <RecordModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        title="Изменить запись"
+        type="edit"
+        record={record}
+      />
+    </>
   );
 };
