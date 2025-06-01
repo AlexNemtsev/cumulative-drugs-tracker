@@ -1,3 +1,11 @@
 .progressBar {
   height: 25px;
 }
+
+.card {
+  --card-border-width: 0;
+
+  padding: 16px;
+  border-radius: 30px;
+  background-color: #fff;
+}

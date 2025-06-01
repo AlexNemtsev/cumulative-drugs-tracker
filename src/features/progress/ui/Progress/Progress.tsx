@@ -34,7 +34,7 @@ export const Progress = () => {
   return (
     <Flex direction="column" gap="5">
       <PageTitle>Акнекутан</PageTitle>
-      <Card>
+      <Card className={styles.card}>
         <Flex direction="column" gap="4">
           <Text size="6">Суммарная доза</Text>
           <ProgressBar value={progressBarValue} className={styles.progressBar} />
