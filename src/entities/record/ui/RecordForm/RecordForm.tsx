@@ -35,9 +35,9 @@ export const RecordForm = (props: Props) => {
     <Root onInvalid={(e) => e.preventDefault()} onSubmit={handleSubmit}>
       <Flex direction="column" gap="3">
         <Field name="datetime">
-          <Flex gap="3">
+          <Flex gap="3" align="center">
             <Label>
-              <Text size="4">Дата и время:</Text>
+              <Text size="4">Время:</Text>
             </Label>
             <Control asChild>
               <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
