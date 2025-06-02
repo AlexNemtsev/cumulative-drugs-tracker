@@ -120,13 +120,11 @@ export default tseslint.config(
       'react/no-array-index-key': 'error',
       'no-alert': 'error',
       'react/forbid-component-props': [
-        // Предупреждение о запрете использования style-аттрибута
         'warn',
         {
           forbid: ['style'],
         },
       ],
-      // Отключение правил после обновления конфига
       'react/function-component-definition': 'off',
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
@@ -139,5 +137,12 @@ export default tseslint.config(
       'import/no-unresolved': 'off',
       'import/no-extraneous-dependencies': 'off',
     },
-  }
+  },
+  {
+    // файл содержит виртуальный модуль из vite-pwa
+    files: ['./src/app/App.tsx'],
+    rules: {
+      'import/no-unresolved': 'off',
+    },
+  },
 );
