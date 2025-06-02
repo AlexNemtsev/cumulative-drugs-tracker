@@ -3,7 +3,7 @@ import { Flex, Text, Card, Progress as ProgressBar } from '@radix-ui/themes';
 import { useRecords } from '@/shared/providers/RecordsProvider';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
-import styles from './Progress.module.css';
+import { card, progressBar } from './Progress.css';
 
 const TARGET_DOSE = 10500;
 const CURRENT_DOSE_A_DAY = 16;
@@ -34,10 +34,10 @@ export const Progress = () => {
   return (
     <Flex direction="column" gap="5">
       <PageTitle>Акнекутан</PageTitle>
-      <Card className={styles.card}>
+      <Card className={card}>
         <Flex direction="column" gap="4">
           <Text size="6">Суммарная доза</Text>
-          <ProgressBar value={progressBarValue} className={styles.progressBar} />
+          <ProgressBar value={progressBarValue} className={progressBar} />
           <Text size="6">
             Принято {cumulativeDose} мг из {TARGET_DOSE} мг
           </Text>

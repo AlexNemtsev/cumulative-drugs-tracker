@@ -2,7 +2,7 @@ import { Box, ContextMenu, Flex, Separator, Text } from '@radix-ui/themes';
 
 import type { RecordType } from '@/shared/types/Record';
 
-import styles from './Content.module.css';
+import { container, separator } from './Content.css';
 
 type Props = {
   record: RecordType;
@@ -17,7 +17,7 @@ export const Content = (props: Props) => {
 
   return (
     <ContextMenu.Trigger>
-      <Box className={styles.container}>
+      <Box className={container}>
         <Flex direction="column" gap="2">
           <Text size="6" weight="medium">
             {date.toLocaleDateString('ru-RU')}
@@ -35,7 +35,7 @@ export const Content = (props: Props) => {
             </Text>
           </Flex>
         </Flex>
-        <Separator size="4" className={styles.separator} />
+        <Separator size="4" className={separator} />
       </Box>
     </ContextMenu.Trigger>
   );
