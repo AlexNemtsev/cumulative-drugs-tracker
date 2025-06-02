@@ -1,4 +1,4 @@
-import { ContextMenu } from '@radix-ui/themes';
+import { ContextMenu, Flex, Separator } from '@radix-ui/themes';
 import { useState } from 'react';
 
 import type { RecordType } from '@/shared/types/Record';
@@ -6,6 +6,7 @@ import type { RecordType } from '@/shared/types/Record';
 import { RecordModal } from '../RecordModal';
 import { Content } from './Content';
 import { DeleteDialog } from './DeleteDialog';
+import { contextMenuOption } from './Record.css';
 
 type Props = {
   record: Required<RecordType>;
@@ -25,8 +26,15 @@ export const Record = (props: Props) => {
       <ContextMenu.Root>
         <Content record={record} />
         <ContextMenu.Content size="2">
-          <ContextMenu.Item onSelect={onEditHandler}>Изменить</ContextMenu.Item>
-          <ContextMenu.Item onSelect={onDeleteHandler}>Удалить</ContextMenu.Item>
+          <Flex direction="column" gap="1">
+            <ContextMenu.Item onSelect={onEditHandler} className={contextMenuOption}>
+              Изменить
+            </ContextMenu.Item>
+            <Separator size="4" />
+            <ContextMenu.Item onSelect={onDeleteHandler} className={contextMenuOption}>
+              Удалить
+            </ContextMenu.Item>
+          </Flex>
         </ContextMenu.Content>
       </ContextMenu.Root>
       <RecordModal
