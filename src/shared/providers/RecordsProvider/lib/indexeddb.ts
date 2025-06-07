@@ -1,4 +1,4 @@
-import { openDB, deleteDB } from 'idb';
+import { openDB } from 'idb';
 import type { DBSchema, IDBPObjectStore } from 'idb';
 
 import type { RecordType } from '../../../types/Record';
@@ -67,42 +67,4 @@ export const updateRecord = async (record: Required<RecordType>) => {
 export const deleteRecord = async (recordId: number) => {
   const db = await getDb();
   await db.delete('records', recordId);
-};
-
-export const migrateDatabase = async () => {
-  // 1. Открываем старую базу
-  const oldDb = await openDB<DosesDB>('my-app-db', 2);
-
-  if (oldDb.objectStoreNames.contains('records')) {
-    // 2. Получаем все записи
-    const allRecords = await oldDb.getAll('records');
-
-    // 3. Открываем новую базу (создаём, если нет)
-    const newDb = await openDB<DosesDB>('doses', 2, {
-      upgrade(db) {
-        if (!db.objectStoreNames.contains('records')) {
-          const store = db.createObjectStore('records', {
-            keyPath: 'id',
-            autoIncrement: true,
-          });
-          store.createIndex('by-datetime', 'datetime');
-        }
-      },
-    });
-
-    // 4. Копируем все записи
-    const tx = newDb.transaction('records', 'readwrite');
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const record of allRecords) {
-      // eslint-disable-next-line no-await-in-loop
-      await tx.store.put(record);
-    }
-
-    await tx.done;
-  }
-
-  // 5. (Опционально) Удаляем старую базу
-  await oldDb.close();
-  await deleteDB('my-app-db');
 };
