@@ -17,6 +17,11 @@ export default defineConfig({
     }),
     vanillaExtractPlugin(),
   ],
+  esbuild: {
+    supported: {
+      'top-level-await': true,
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

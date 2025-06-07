@@ -1,6 +1,7 @@
 import { Root, Submit } from '@radix-ui/react-form';
 import { Button, Flex, Select } from '@radix-ui/themes';
 
+import { AppSettings } from '@/shared/appSettings';
 import type { RecordType } from '@/shared/types/Record';
 import { DateTime } from '@/shared/ui/DateTime';
 
@@ -12,8 +13,6 @@ type Props = {
   onSubmit: (value: Value) => void;
   formValue?: Value;
 };
-
-const DOSES = [8, 16] as const;
 
 export const RecordForm = (props: Props) => {
   const { onSubmit, formValue } = props;
@@ -31,7 +30,7 @@ export const RecordForm = (props: Props) => {
       return;
     }
 
-    onSubmit({ datetime, dose });
+    onSubmit({ datetime, dose, targetDose: AppSettings.DAY_TARGET });
     form.reset();
   };
 
@@ -43,11 +42,15 @@ export const RecordForm = (props: Props) => {
         </FormField>
 
         <FormField name="dose" label="Дозировка, мг:">
-          <Select.Root name="dose" defaultValue={formValue ? formValue.dose : '16'} size="3">
+          <Select.Root
+            name="dose"
+            defaultValue={formValue ? formValue.dose : AppSettings.DEFAULT_DOSE}
+            size="3"
+          >
             <Select.Trigger />
             <Select.Content>
-              {DOSES.map((dose) => (
-                <Select.Item value={`${dose}`} key={dose}>
+              {AppSettings.DOSES.map((dose) => (
+                <Select.Item value={dose} key={dose}>
                   {dose}
                 </Select.Item>
               ))}

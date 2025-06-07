@@ -1,5 +1,6 @@
 import { Dialog } from '@radix-ui/themes';
 
+import { AppSettings } from '@/shared/appSettings';
 import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
 import { useRecords } from '@/shared/providers/RecordsProvider';
 import type { RecordType } from '@/shared/types/Record';
@@ -14,8 +15,9 @@ type Props = {
   record?: Required<RecordType>;
 };
 
-const defaultRecord = {
-  dose: '16',
+const defaultRecord: RecordType = {
+  dose: AppSettings.DEFAULT_DOSE,
+  targetDose: AppSettings.DAY_TARGET,
   datetime: toDateTimeLocal(new Date()),
 };
 
