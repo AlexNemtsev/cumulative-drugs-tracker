@@ -144,5 +144,5 @@ export default tseslint.config(
     rules: {
       'import/no-unresolved': 'off',
     },
-  },
+  }
 );
