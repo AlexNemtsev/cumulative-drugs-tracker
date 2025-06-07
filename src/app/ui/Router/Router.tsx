@@ -1,13 +1,11 @@
 import { Route, Switch } from 'wouter';
 
-import { Home } from '@/pages/HomePage';
-import { Log } from '@/pages/Log';
-import { Settings } from '@/pages/Settings';
+import { routes } from '../../routes';
 
 export const Router = () => (
   <Switch>
-    <Route path="/" component={Home} />
-    <Route path="/log" component={Log} />
-    <Route path="/settings" component={Settings} />
+    {routes.map((route) => (
+      <Route path={route.route} component={route.component} key={route.route} />
+    ))}
   </Switch>
 );

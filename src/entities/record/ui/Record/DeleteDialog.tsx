@@ -29,7 +29,7 @@ export const DeleteDialog = (props: Props) => {
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>
-            <Button color="gray" size="4" onClick={handleCloseDialog}>
+            <Button variant="outline" size="4" onClick={handleCloseDialog}>
               Нет
             </Button>
           </AlertDialog.Cancel>

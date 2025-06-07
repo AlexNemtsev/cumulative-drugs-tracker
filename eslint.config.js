@@ -112,7 +112,6 @@ export default tseslint.config(
       'react-hooks/rules-of-hooks': 'error',
       'import/prefer-default-export': 'off',
       'no-nested-ternary': 'error',
-      'react/display-name': 'warn',
       curly: ['error', 'all'],
       'import/no-default-export': 'error',
       'no-underscore-dangle': 'error',
@@ -128,6 +127,7 @@ export default tseslint.config(
       'react/function-component-definition': 'off',
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/jsx-key': 'error',
     },
   },
   {
@@ -144,5 +144,5 @@ export default tseslint.config(
     rules: {
       'import/no-unresolved': 'off',
     },
-  },
+  }
 );

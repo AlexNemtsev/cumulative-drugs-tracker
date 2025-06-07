@@ -1,10 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { App } from './app';
+import { AppWithProviders } from './app';
+import { migrateDatabase } from './shared/providers/RecordsProvider/lib/indexeddb';
+
+await migrateDatabase();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AppWithProviders />
   </StrictMode>
 );
