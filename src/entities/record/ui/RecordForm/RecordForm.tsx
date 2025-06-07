@@ -11,11 +11,12 @@ type Value = Omit<RecordType, 'id'>;
 
 type Props = {
   onSubmit: (value: Value) => void;
+  onCancel: () => void;
   formValue?: Value;
 };
 
 export const RecordForm = (props: Props) => {
-  const { onSubmit, formValue } = props;
+  const { onSubmit, onCancel, formValue } = props;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,7 +63,7 @@ export const RecordForm = (props: Props) => {
           <Submit asChild>
             <Button size="4">Сохранить</Button>
           </Submit>
-          <Button variant="outline" size="4">
+          <Button variant="outline" size="4" onClick={onCancel}>
             Отмена
           </Button>
         </Flex>

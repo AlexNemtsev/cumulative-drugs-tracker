@@ -25,6 +25,8 @@ export const RecordModal = (props: Props) => {
   const { isOpen, onOpenChange, title, type, record } = props;
   const { addRecord, updateRecord } = useRecords();
 
+  const handleCloseModal = () => onOpenChange(false);
+
   const handleUpdate = async (updatedRecord: Omit<RecordType, 'id'>) => {
     if (record) {
       await updateRecord({ id: record?.id, ...updatedRecord });
@@ -35,7 +37,7 @@ export const RecordModal = (props: Props) => {
 
   const handleSubmit = async (newRecord: Omit<RecordType, 'id'>) => {
     await handleFunction(newRecord);
-    onOpenChange(false);
+    handleCloseModal();
   };
 
   const formValue: RecordType = type === 'edit' && record ? record : defaultRecord;
@@ -49,7 +51,7 @@ export const RecordModal = (props: Props) => {
           }}
         >
           <Dialog.Title>{title}</Dialog.Title>
-          <RecordForm onSubmit={handleSubmit} formValue={formValue} />
+          <RecordForm onSubmit={handleSubmit} formValue={formValue} onCancel={handleCloseModal} />
         </Dialog.Content>
       </Dialog.Root>
     )
