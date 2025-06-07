@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import { Home } from '@/pages/HomePage';
 import { Log } from '@/pages/Log';
-import { Settings } from '@/pages/Settings';
+// import { Settings } from '@/pages/Settings';
 
 type Route = {
   route: string;
@@ -21,9 +21,9 @@ export const routes: Route[] = [
     component: Log,
     title: 'Журнал',
   },
-  {
-    route: '/settings',
-    component: Settings,
-    title: 'Настройки',
-  },
+  // {
+  //   route: '/settings',
+  //   component: Settings,
+  //   title: 'Настройки',
+  // },
 ] as const;

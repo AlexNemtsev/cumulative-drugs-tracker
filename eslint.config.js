@@ -127,6 +127,7 @@ export default tseslint.config(
       'react/function-component-definition': 'off',
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/jsx-key': 'error',
     },
   },
   {

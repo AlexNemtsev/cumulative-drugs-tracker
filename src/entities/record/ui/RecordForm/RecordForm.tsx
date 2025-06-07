@@ -1,8 +1,10 @@
-import { Control, Field, Label, Message, Root, Submit } from '@radix-ui/react-form';
-import { Button, Flex, Select, Text } from '@radix-ui/themes';
+import { Root, Submit } from '@radix-ui/react-form';
+import { Button, Flex, Select } from '@radix-ui/themes';
 
 import type { RecordType } from '@/shared/types/Record';
 import { DateTime } from '@/shared/ui/DateTime';
+
+import { FormField } from './FormField';
 
 type Value = Omit<RecordType, 'id'>;
 
@@ -11,10 +13,12 @@ type Props = {
   formValue?: Value;
 };
 
+const DOSES = [8, 16] as const;
+
 export const RecordForm = (props: Props) => {
   const { onSubmit, formValue } = props;
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -34,40 +38,31 @@ export const RecordForm = (props: Props) => {
   return (
     <Root onInvalid={(e) => e.preventDefault()} onSubmit={handleSubmit}>
       <Flex direction="column" gap="3">
-        <Field name="datetime">
-          <Flex gap="3" align="center">
-            <Label>
-              <Text size="4">Время:</Text>
-            </Label>
-            <Control asChild>
-              <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
-            </Control>
-          </Flex>
-          <Message match="valueMissing">
-            <Text color="red">Нужно указать дату и время</Text>
-          </Message>
-        </Field>
+        <FormField name="datetime" label="Время:" valueMissingError="Нужно указать дату и время">
+          <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
+        </FormField>
 
-        <Field name="dose">
-          <Flex gap="3" align="center">
-            <Label>
-              <Text size="4">Дозировка, мг:</Text>
-            </Label>
-            <Control asChild>
-              <Select.Root name="dose" defaultValue={formValue ? formValue.dose : '16'} size="3">
-                <Select.Trigger />
-                <Select.Content>
-                  <Select.Item value="8">8</Select.Item>
-                  <Select.Item value="16">16</Select.Item>
-                </Select.Content>
-              </Select.Root>
-            </Control>
-          </Flex>
-        </Field>
+        <FormField name="dose" label="Дозировка, мг:">
+          <Select.Root name="dose" defaultValue={formValue ? formValue.dose : '16'} size="3">
+            <Select.Trigger />
+            <Select.Content>
+              {DOSES.map((dose) => (
+                <Select.Item value={`${dose}`} key={dose}>
+                  {dose}
+                </Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
+        </FormField>
 
-        <Submit asChild>
-          <Button size="4">Сохранить</Button>
-        </Submit>
+        <Flex justify="between">
+          <Submit asChild>
+            <Button size="4">Сохранить</Button>
+          </Submit>
+          <Button variant="outline" size="4">
+            Отмена
+          </Button>
+        </Flex>
       </Flex>
     </Root>
   );

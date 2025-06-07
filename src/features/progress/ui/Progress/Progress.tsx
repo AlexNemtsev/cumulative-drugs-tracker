@@ -1,7 +1,6 @@
 import { Flex, Text, Card, Progress as ProgressBar } from '@radix-ui/themes';
 
 import { useRecords } from '@/shared/providers/RecordsProvider';
-import { PageTitle } from '@/shared/ui/PageTitle';
 
 import { card, progressBar } from './Progress.css';
 
@@ -32,20 +31,17 @@ export const Progress = () => {
   expectedDay.setDate(expectedDay.getDate() + Math.ceil(etaDays));
 
   return (
-    <Flex direction="column" gap="5">
-      <PageTitle>Акнекутан</PageTitle>
-      <Card className={card}>
-        <Flex direction="column" gap="4">
-          <Text size="6">Суммарная доза</Text>
-          <ProgressBar value={progressBarValue} className={progressBar} />
-          <Text size="6">
-            Принято {cumulativeDose} мг из {TARGET_DOSE} мг
-          </Text>
-          <Text size="5">
-            Ожидаемое завершение – {expectedDay.toLocaleDateString('ru-RU', dateConfig)}
-          </Text>
-        </Flex>
-      </Card>
-    </Flex>
+    <Card className={card}>
+      <Flex direction="column" gap="4">
+        <Text size="6">Суммарная доза</Text>
+        <ProgressBar value={progressBarValue} className={progressBar} />
+        <Text size="6">
+          Принято {cumulativeDose} мг из {TARGET_DOSE} мг
+        </Text>
+        <Text size="5">
+          Ожидаемое завершение – {expectedDay.toLocaleDateString('ru-RU', dateConfig)}
+        </Text>
+      </Flex>
+    </Card>
   );
 };
