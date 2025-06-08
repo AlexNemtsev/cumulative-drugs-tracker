@@ -6,6 +6,7 @@ import type { RecordType } from '@/shared/types/Record';
 import { DateTime } from '@/shared/ui/DateTime';
 
 import { FormField } from './FormField';
+import { selectContent, selectItem } from './RecordForm.css';
 
 type Value = Omit<RecordType, 'id'>;
 
@@ -49,9 +50,9 @@ export const RecordForm = (props: Props) => {
             size="3"
           >
             <Select.Trigger />
-            <Select.Content>
+            <Select.Content className={selectContent}>
               {AppSettings.DOSES.map((dose) => (
-                <Select.Item value={dose} key={dose}>
+                <Select.Item value={dose} key={dose} className={selectItem}>
                   {dose}
                 </Select.Item>
               ))}
