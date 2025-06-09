@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import path from 'path';
 
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
@@ -20,6 +21,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup.ts',
+    coverage: {
+      provider: 'istanbul',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/main.tsx'],
     },
   },
   server: {

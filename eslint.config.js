@@ -102,7 +102,10 @@ export default tseslint.config(
         },
       ],
       'func-style': ['error', 'expression'],
-      'import/no-extraneous-dependencies': 'error',
+      'import/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: ['**/*.test.{ts,tsx}', 'tests/**/*'] },
+      ],
       'max-len': ['warn', { code: 100, ignorePattern: '^import .*' }],
       'no-console': ['error', { allow: ['warn', 'error', 'info', 'groupCollapsed', 'groupEnd'] }],
       'jsx-a11y/img-redundant-alt': 'error',
