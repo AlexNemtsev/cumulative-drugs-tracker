@@ -59,7 +59,6 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError(error.message);
-        console.error(error);
       } else {
         showError('Ошибка при редактировании записи');
       }
@@ -73,7 +72,6 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError(error.message);
-        console.error(error);
       } else {
         showError('Ошибка при удалении записи');
       }
@@ -81,7 +79,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const contextValue = useMemo(
-    () => ({ records, addRecord, updateRecord, deleteRecord, reload: loadRecords }),
+    () => ({ records, addRecord, updateRecord, deleteRecord }),
     [records]
   );
 

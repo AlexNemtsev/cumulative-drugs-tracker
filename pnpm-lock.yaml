@@ -132,6 +132,9 @@ importers:
       vite-plugin-pwa:
         specifier: ^1.0.0
         version: 1.0.0(vite@6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0))(workbox-build@7.3.0(@types/babel__core@7.20.5))(workbox-window@7.3.0)
+      vite-tsconfig-paths:
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0))
       vitest:
         specifier: ^3.2.3
         version: 3.2.3(@types/node@22.15.17)(jsdom@26.1.0)(terser@5.39.0)(yaml@2.8.0)
@@ -2967,6 +2970,9 @@ packages:
   globjoin@0.1.4:
     resolution: {integrity: sha512-xYfnw62CKG8nLkZBfWbhWwDw02CHty86jfPcc2cr3ZfeuK9ysoVPPEUxf21bAD/rWAgk52SuBrLJlefNy8mvFg==}
 
+  globrex@0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -4300,6 +4306,16 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
+  tsconfck@3.1.6:
+    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -4449,6 +4465,14 @@ packages:
       workbox-window: ^7.3.0
     peerDependenciesMeta:
       '@vite-pwa/assets-generator':
+        optional: true
+
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
         optional: true
 
   vite@6.3.5:
@@ -5357,7 +5381,7 @@ snapshots:
       '@babel/parser': 7.27.2
       '@babel/template': 7.27.2
       '@babel/types': 7.27.1
-      debug: 4.4.0
+      debug: 4.4.1
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -6615,7 +6639,7 @@ snapshots:
       '@typescript-eslint/types': 8.32.0
       '@typescript-eslint/typescript-estree': 8.32.0(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.32.0
-      debug: 4.4.0
+      debug: 4.4.1
       eslint: 9.26.0
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -7679,7 +7703,7 @@ snapshots:
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.2.2
-      debug: 4.4.0
+      debug: 4.4.1
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -7907,6 +7931,8 @@ snapshots:
       slash: 3.0.0
 
   globjoin@0.1.4: {}
+
+  globrex@0.1.2: {}
 
   gopd@1.2.0: {}
 
@@ -9368,6 +9394,10 @@ snapshots:
     dependencies:
       typescript: 5.8.3
 
+  tsconfck@3.1.6(typescript@5.8.3):
+    optionalDependencies:
+      typescript: 5.8.3
+
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -9502,7 +9532,7 @@ snapshots:
   vite-node@3.1.4(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0):
     dependencies:
       cac: 6.7.14
-      debug: 4.4.0
+      debug: 4.4.1
       es-module-lexer: 1.7.0
       pathe: 2.0.3
       vite: 6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0)
@@ -9551,6 +9581,17 @@ snapshots:
       workbox-window: 7.3.0
     transitivePeerDependencies:
       - supports-color
+
+  vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0)):
+    dependencies:
+      debug: 4.4.1
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.8.3)
+    optionalDependencies:
+      vite: 6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   vite@6.3.5(@types/node@22.15.17)(terser@5.39.0)(yaml@2.8.0):
     dependencies:

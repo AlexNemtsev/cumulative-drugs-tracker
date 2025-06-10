@@ -11,7 +11,7 @@ interface DosesDB extends DBSchema {
   };
 }
 
-export const getDb = async () =>
+const getDb = async () =>
   openDB<DosesDB>('doses', 2, {
     upgrade: async (db, oldVersion, _, transaction) => {
       let store: IDBPObjectStore<DosesDB, ArrayLike<'records'>, 'records', 'versionchange'>;
