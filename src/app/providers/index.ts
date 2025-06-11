@@ -1,15 +1,14 @@
-import type { FC, JSX } from 'react';
+import type { ComponentType } from 'react';
 
 import { withErrorDialogProvider } from './withErrorDialogProvider';
+import type { WithProviderHOC } from './WithProviderHOC';
 import { withRecordsProvider } from './withRecordsProvider';
 import { withThemeProvider } from './withThemeProvider';
 
-type ProviderHOC = (Component: FC) => () => JSX.Element;
-
 const compose =
-  (...fns: ProviderHOC[]) =>
-  (initialVal: FC) =>
-    fns.reduceRight((val, fn) => fn(val), initialVal);
+  (...hocs: WithProviderHOC[]) =>
+  <P extends Record<string, unknown>>(Component: ComponentType<P>): ComponentType<P> =>
+    hocs.reduceRight((acc, hoc) => hoc(acc), Component);
 
 export const withProviders = compose(
   withThemeProvider,

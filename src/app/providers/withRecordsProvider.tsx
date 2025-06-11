@@ -1,9 +1,9 @@
-import type { FC } from 'react';
-
 import { RecordsProvider } from '@/shared/providers/RecordsProvider';
 
-export const withRecordsProvider = (Component: FC) => () => (
+import type { WithProviderHOC } from './WithProviderHOC';
+
+export const withRecordsProvider: WithProviderHOC = (Component) => (props) => (
   <RecordsProvider>
-    <Component />
+    <Component {...props} />
   </RecordsProvider>
 );
