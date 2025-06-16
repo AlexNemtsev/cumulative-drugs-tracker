@@ -35,6 +35,10 @@ describe('Хук useRecords', () => {
   it('Возвращает все записи из бд', async () => {
     const { result } = renderHook(useRecords, { wrapper: Wrapper });
 
+    act(() => {
+      result.current.loadRecords();
+    });
+
     await waitFor(() => {
       expect(mockDb.getAll).toHaveBeenCalledWith('records');
       expect(result.current.records).toEqual(records);
@@ -92,7 +96,11 @@ describe('Хук useRecords', () => {
   it('Должно отобразиться сообщение, при ошибке чтения бд', async () => {
     (mockDb.getAll as unknown as MockInstance).mockRejectedValueOnce(new Error(testError));
 
-    renderHook(useRecords, { wrapper: Wrapper });
+    const { result } = renderHook(useRecords, { wrapper: Wrapper });
+
+    act(() => {
+      result.current.loadRecords();
+    });
 
     await waitFor(() => {
       expect(screen.getByText(testError)).toBeInTheDocument();
@@ -102,7 +110,11 @@ describe('Хук useRecords', () => {
   it('Должно отобразиться сообщение по-умолчанию, при ошибке чтения бд, если ошибка не типа Error', async () => {
     (mockDb.getAll as unknown as MockInstance).mockRejectedValueOnce(1);
 
-    renderHook(useRecords, { wrapper: Wrapper });
+    const { result } = renderHook(useRecords, { wrapper: Wrapper });
+
+    act(() => {
+      result.current.loadRecords();
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Ошибка при загрузке записей')).toBeInTheDocument();
