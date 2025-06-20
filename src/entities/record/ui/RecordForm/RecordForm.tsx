@@ -8,15 +8,15 @@ import { DateTime } from '@/shared/ui/DateTime';
 import { FormField } from './FormField';
 import { selectContent, selectItem } from './RecordForm.css';
 
-type Value = Omit<RecordType, 'id'>;
+type Value = Omit<RecordType, 'id' | 'targetDose'>;
 
-type Props = {
+export type RecordFormProps = {
   onSubmit: (value: Value) => void;
   onCancel: () => void;
   formValue?: Value;
 };
 
-export const RecordForm = (props: Props) => {
+export const RecordForm = (props: RecordFormProps) => {
   const { onSubmit, onCancel, formValue } = props;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,16 +28,18 @@ export const RecordForm = (props: Props) => {
     const datetime = formData.get('datetime') as string;
     const dose = formData.get('dose') as string;
 
-    if (!datetime || !dose) {
-      return;
-    }
-
-    onSubmit({ datetime, dose, targetDose: AppSettings.DAY_TARGET });
+    onSubmit({ datetime, dose });
     form.reset();
   };
 
+  const handleCancel = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    onCancel();
+  };
+
   return (
-    <Root onInvalid={(e) => e.preventDefault()} onSubmit={handleSubmit}>
+    <Root onInvalid={(e) => e.preventDefault()} onSubmit={handleSubmit} onReset={handleCancel}>
       <Flex direction="column" gap="3">
         <FormField name="datetime" label="Время:" valueMissingError="Нужно указать дату и время">
           <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
@@ -64,7 +66,7 @@ export const RecordForm = (props: Props) => {
           <Submit asChild>
             <Button size="4">Сохранить</Button>
           </Submit>
-          <Button variant="outline" size="4" onClick={onCancel}>
+          <Button variant="outline" size="4" type="reset">
             Отмена
           </Button>
         </Flex>

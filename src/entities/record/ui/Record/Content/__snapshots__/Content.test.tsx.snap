@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Content должен отрисоваться 1`] = `
+<div
+  class="rt-Box Content_container__gyj8v0"
+  data-testid="record-content"
+>
+  <div
+    class="rt-Flex rt-r-fd-column rt-r-gap-2"
+  >
+    <span
+      class="rt-Text rt-r-size-6 rt-r-weight-medium"
+    >
+      11.06.2025
+    </span>
+    <div
+      class="rt-Flex rt-r-jc-space-between"
+    >
+      <span
+        class="rt-Text rt-r-size-6 rt-r-weight-medium"
+      >
+        15:48
+      </span>
+      <span
+        class="rt-Text rt-r-size-6 rt-r-weight-medium"
+      >
+        16
+         мг
+      </span>
+    </div>
+  </div>
+  <span
+    class="rt-Separator rt-r-orientation-horizontal rt-r-size-4 Content_separator__gyj8v1"
+    data-accent-color="gray"
+  />
+</div>
+`;

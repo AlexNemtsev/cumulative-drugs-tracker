@@ -3,7 +3,7 @@ import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { useRecords } from '@/shared/providers/RecordsProvider';
 
 type Props = {
-  recordId: number;
+  recordId?: number;
   isOpen: boolean;
   onOpenChange: (isOpened: boolean) => void;
 };
@@ -14,7 +14,10 @@ export const DeleteDialog = (props: Props) => {
   const { deleteRecord } = useRecords();
 
   const handleDelete = async () => {
-    await deleteRecord(recordId);
+    if (recordId) {
+      await deleteRecord(recordId);
+    }
+
     onOpenChange(false);
   };
 

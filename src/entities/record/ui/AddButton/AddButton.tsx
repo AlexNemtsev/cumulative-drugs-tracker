@@ -10,15 +10,10 @@ export const AddButton = () => {
 
   return (
     <>
-      <Button size="4" onClick={() => setIsModalOpen(true)}>
+      <Button size="4" onClick={() => setIsModalOpen(true)} aria-label="Добавить запись">
         <PlusIcon />
       </Button>
-      <RecordModal
-        type="add"
-        title="Создать запись"
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-      />
+      <RecordModal type="add" isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
     </>
   );
 };
