@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import type { RecordType } from '@/shared/types/Record';
 
@@ -78,6 +78,10 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     () => ({ records, addRecord, updateRecord, deleteRecord, loadRecords }),
     [records]
   );
+
+  useEffect(() => {
+    loadRecords();
+  }, []);
 
   return <RecordsContext.Provider value={recordsValue}>{children}</RecordsContext.Provider>;
 };

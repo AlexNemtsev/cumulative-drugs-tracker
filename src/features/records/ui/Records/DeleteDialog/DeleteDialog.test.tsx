@@ -1,23 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { type IDBPDatabase, openDB } from 'idb';
-
-import { withProviders } from '@/app/providers';
 
 import { DeleteDialog } from './DeleteDialog';
 
 const handleChange = vi.fn();
+const handleDelete = vi.fn();
 
-const DialogWithProviders = withProviders(DeleteDialog);
-
-const setup = () => render(<DialogWithProviders isOpen recordId={6} onOpenChange={handleChange} />);
+const setup = () =>
+  render(<DeleteDialog isOpen onOpenChange={handleChange} onDelete={handleDelete} />);
 
 describe('DeleteDialog', () => {
-  let mockDb: IDBPDatabase<unknown>;
-
-  beforeEach(async () => {
-    mockDb = await openDB('doses');
-  });
-
   it('должен отрисоваться', () => {
     setup();
 
@@ -48,8 +39,8 @@ describe('DeleteDialog', () => {
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
-      expect(mockDb.delete).toHaveBeenCalledWith('records', 6);
       expect(handleChange).toBeCalledWith(false);
+      expect(handleDelete).toBeCalled();
     });
   });
 
@@ -63,7 +54,7 @@ describe('DeleteDialog', () => {
     fireEvent.click(cancelButton);
 
     await waitFor(() => {
-      expect(mockDb.delete).not.toHaveBeenCalled();
+      expect(handleDelete).not.toHaveBeenCalled();
       expect(handleChange).toBeCalledWith(false);
     });
   });

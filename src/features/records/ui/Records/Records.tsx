@@ -10,19 +10,27 @@ import { DeleteDialog } from './DeleteDialog';
 import { recordsClass } from './Records.css';
 
 export const Records = () => {
-  const { records } = useRecords();
+  const { records, deleteRecord } = useRecords();
   const [recordToChange, setRecordToChange] = useState<Required<RecordType>>();
   const [isEditModalOpened, setIsEditModalOpened] = useState(false);
   const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
 
-  const handelEditRecord = (record: Required<RecordType>) => {
+  const openEditModal = (record: Required<RecordType>) => {
     setRecordToChange(record);
     setIsEditModalOpened(true);
   };
 
-  const handleDeleteRecord = (record: Required<RecordType>) => {
+  const openDeleteModal = (record: Required<RecordType>) => {
     setRecordToChange(record);
     setIsDeleteDialogOpened(true);
+  };
+
+  const handleDeleteRecord = async () => {
+    if (recordToChange) {
+      await deleteRecord(recordToChange.id);
+    }
+
+    setIsDeleteDialogOpened(false);
   };
 
   return records.length ? (
@@ -32,22 +40,26 @@ export const Records = () => {
           <Record
             key={record.id}
             record={record}
-            onDelete={handleDeleteRecord}
-            onEdit={handelEditRecord}
+            onDelete={openDeleteModal}
+            onEdit={openEditModal}
           />
         ))}
       </ScrollArea>
-      <RecordModal
-        isOpen={isEditModalOpened}
-        onOpenChange={setIsEditModalOpened}
-        type="edit"
-        record={recordToChange!}
-      />
-      <DeleteDialog
-        recordId={recordToChange?.id}
-        isOpen={isDeleteDialogOpened}
-        onOpenChange={setIsDeleteDialogOpened}
-      />
+      {recordToChange && (
+        <>
+          <RecordModal
+            isOpen={isEditModalOpened}
+            onOpenChange={setIsEditModalOpened}
+            type="edit"
+            record={recordToChange}
+          />
+          <DeleteDialog
+            onDelete={handleDeleteRecord}
+            isOpen={isDeleteDialogOpened}
+            onOpenChange={setIsDeleteDialogOpened}
+          />
+        </>
+      )}
     </>
   ) : (
     <Text align="center" size="4">
