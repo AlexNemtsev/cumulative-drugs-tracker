@@ -2,11 +2,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { DeleteDialog } from './DeleteDialog';
 
-const handleChange = vi.fn();
+const handleCancel = vi.fn();
 const handleDelete = vi.fn();
 
-const setup = () =>
-  render(<DeleteDialog isOpen onOpenChange={handleChange} onDelete={handleDelete} />);
+const setup = () => render(<DeleteDialog isOpen onCancel={handleCancel} onDelete={handleDelete} />);
 
 describe('DeleteDialog', () => {
   it('должен отрисоваться', () => {
@@ -39,7 +38,7 @@ describe('DeleteDialog', () => {
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
-      expect(handleChange).toBeCalledWith(false);
+      expect(handleCancel).not.toBeCalled();
       expect(handleDelete).toBeCalled();
     });
   });
@@ -55,7 +54,7 @@ describe('DeleteDialog', () => {
 
     await waitFor(() => {
       expect(handleDelete).not.toHaveBeenCalled();
-      expect(handleChange).toBeCalledWith(false);
+      expect(handleCancel).toBeCalled();
     });
   });
 });

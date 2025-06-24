@@ -2,17 +2,15 @@ import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 
 type Props = {
   isOpen: boolean;
-  onOpenChange: (isOpened: boolean) => void;
+  onCancel: () => void;
   onDelete: () => void;
 };
 
 export const DeleteDialog = (props: Props) => {
-  const { isOpen, onOpenChange, onDelete } = props;
-
-  const handleCloseDialog = () => onOpenChange(false);
+  const { isOpen, onCancel, onDelete } = props;
 
   return (
-    <AlertDialog.Root open={isOpen} onOpenChange={onOpenChange}>
+    <AlertDialog.Root open={isOpen}>
       <AlertDialog.Content>
         <AlertDialog.Title>Удалить запись</AlertDialog.Title>
         <AlertDialog.Description>
@@ -20,7 +18,7 @@ export const DeleteDialog = (props: Props) => {
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>
-            <Button variant="outline" size="4" onClick={handleCloseDialog}>
+            <Button variant="outline" size="4" onClick={onCancel}>
               Нет
             </Button>
           </AlertDialog.Cancel>

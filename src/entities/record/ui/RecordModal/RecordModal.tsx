@@ -2,44 +2,22 @@ import { Dialog } from '@radix-ui/themes';
 
 import { AppSettings } from '@/shared/appSettings';
 import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
-import { useRecords } from '@/shared/providers/RecordsProvider';
 import type { RecordType } from '@/shared/types/Record';
 
 import { RecordForm } from '../RecordForm';
 
-type OnOpenHandler = (isOpen: boolean) => void;
-
-type RecordModalAddProps = {
+export type RecordModalProps = {
   isOpen?: boolean;
-  onOpenChange: OnOpenHandler;
-  type: 'add';
-  record?: never;
+  onSubmit: (record: RecordType) => void;
+  onCancel: () => void;
+  record?: RecordType;
 };
-
-type RecordModalEditProps = {
-  isOpen?: boolean;
-  onOpenChange: OnOpenHandler;
-  type: 'edit';
-  record: Required<RecordType>;
-};
-
-export type RecordModalProps = RecordModalAddProps | RecordModalEditProps;
 
 export const RecordModal = (props: RecordModalProps) => {
-  const { isOpen, onOpenChange, type, record } = props;
-  const { addRecord, updateRecord } = useRecords();
+  const { isOpen, record, onSubmit, onCancel } = props;
 
-  const handleCloseModal = () => onOpenChange(false);
-
-  const handleUpdate = async (updatedRecord: Omit<RecordType, 'id'>) => {
-    await updateRecord({ id: record!.id, ...updatedRecord });
-  };
-
-  const handleFunction = type === 'add' ? addRecord : handleUpdate;
-
-  const handleSubmit = async (newRecord: Omit<RecordType, 'id' | 'targetDose'>) => {
-    await handleFunction({ ...newRecord, targetDose: AppSettings.DAY_TARGET });
-    handleCloseModal();
+  const handleSubmit = (newRecord: Omit<RecordType, 'id' | 'targetDose'>) => {
+    onSubmit({ ...newRecord, targetDose: AppSettings.DAY_TARGET });
   };
 
   const defaultRecord: RecordType = {
@@ -48,14 +26,15 @@ export const RecordModal = (props: RecordModalProps) => {
     datetime: toDateTimeLocal(new Date()),
   };
 
-  const formValue: RecordType = type === 'edit' ? record : defaultRecord;
-  const title = type === 'edit' ? 'Изменить запись' : 'Создать запись';
-  const description =
-    type === 'edit' ? 'Изменить запись о приёме лекарства' : 'Создать запись о приёме лекарства';
+  const formValue = record ?? defaultRecord;
+  const title = record ? 'Изменить запись' : 'Создать запись';
+  const description = record
+    ? 'Изменить запись о приёме лекарства'
+    : 'Создать запись о приёме лекарства';
 
   return (
     isOpen && (
-      <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
+      <Dialog.Root open={isOpen}>
         <Dialog.Content
           onOpenAutoFocus={(event) => {
             event.preventDefault();
@@ -63,7 +42,7 @@ export const RecordModal = (props: RecordModalProps) => {
         >
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
-          <RecordForm onSubmit={handleSubmit} formValue={formValue} onCancel={handleCloseModal} />
+          <RecordForm onSubmit={handleSubmit} formValue={formValue} onCancel={onCancel} />
         </Dialog.Content>
       </Dialog.Root>
     )
