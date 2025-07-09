@@ -35,7 +35,7 @@ describe('Компонент Records', () => {
     expect(elements[0]).toHaveTextContent(records[0].dose);
   });
 
-  it('при нажатии изменить в контекстном меню открывает модалку RecordModal', async () => {
+  it('при нажатии изменить в контекстном меню открывает модальное окно RecordModal на изменение записи', async () => {
     render(<RecordsWithProviders />);
 
     const elements = await screen.findAllByText(/мг/);
@@ -74,5 +74,18 @@ describe('Компонент Records', () => {
     await waitFor(() => {
       expect(mockDb.delete).toHaveBeenCalledWith('records', records[0].id);
     });
+  });
+
+  it('при нажатии на Add Button должна открыться модальное окно на создание записи', async () => {
+    render(<RecordsWithProviders />);
+
+    const addButton = await screen.findByRole('button', { name: /добавить запись/i });
+    fireEvent.click(addButton);
+
+    const modal = screen.getByRole('dialog', {
+      name: /создать запись/i,
+    });
+
+    expect(modal).toBeInTheDocument();
   });
 });

@@ -8,14 +8,14 @@ import { contextMenuOption } from './Record.css';
 type Props = {
   record: Required<RecordType>;
   onEdit: (record: Required<RecordType>) => void;
-  onDelete: (record: Required<RecordType>) => void;
+  onDelete: (recordId: number) => void;
 };
 
 export const Record = (props: Props) => {
   const { record, onEdit, onDelete } = props;
 
   const onEditHandler = () => onEdit(record);
-  const onDeleteHandler = () => onDelete(record);
+  const onDeleteHandler = () => onDelete(record.id);
 
   return (
     <ContextMenu.Root>

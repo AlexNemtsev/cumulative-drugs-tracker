@@ -21,7 +21,7 @@ const setup = () =>
   render(<RecordWithProviders record={testRecord} onDelete={handleDelete} onEdit={handleEdit} />);
 
 describe('Record', () => {
-  it('Должен отрисоваться', () => {
+  it('Должен отрисоваться', async () => {
     setup();
 
     const recordContent = screen.getByTestId('record-content');
@@ -32,34 +32,34 @@ describe('Record', () => {
 
     fireEvent.contextMenu(recordContent);
 
-    const editButton = screen.getByRole('menuitem', { name: /изменить/i });
-    const deleteButton = screen.getByRole('menuitem', { name: /удалить/i });
+    const editButton = await screen.findByRole('menuitem', { name: /изменить/i });
+    const deleteButton = await screen.findByRole('menuitem', { name: /удалить/i });
 
     expect(editButton).toBeInTheDocument();
     expect(deleteButton).toBeInTheDocument();
   });
 
-  it('Должен вызваться onEdit при нажатии на Изменить', () => {
+  it('Должен вызваться onEdit при нажатии на Изменить', async () => {
     setup();
 
     const recordContent = screen.getByTestId('record-content');
     fireEvent.contextMenu(recordContent);
 
-    const editButton = screen.getByRole('menuitem', { name: /изменить/i });
+    const editButton = await screen.findByRole('menuitem', { name: /изменить/i });
     fireEvent.click(editButton);
 
     expect(handleEdit).toBeCalledWith(testRecord);
   });
 
-  it('Должен вызваться onDelete при нажатии на Удалить', () => {
+  it('Должен вызваться onDelete при нажатии на Удалить', async () => {
     setup();
 
     const recordContent = screen.getByTestId('record-content');
     fireEvent.contextMenu(recordContent);
 
-    const deleteButton = screen.getByRole('menuitem', { name: /удалить/i });
+    const deleteButton = await screen.findByRole('menuitem', { name: /удалить/i });
     fireEvent.click(deleteButton);
 
-    expect(handleDelete).toBeCalledWith(testRecord);
+    expect(handleDelete).toBeCalledWith(testRecord.id);
   });
 });
