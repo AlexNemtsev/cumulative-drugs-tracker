@@ -1,0 +1,153 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Компонент Progress должен отрисоваться с принятой дозировкой +0 1`] = `
+<div
+  class="rt-reset rt-BaseCard rt-Card rt-r-size-1 rt-variant-surface Progress_card__10lthzj1 container_container__1h2gq2x0"
+  data-testid="progress"
+>
+  <div
+    class="rt-Flex rt-r-fd-column rt-r-gap-4"
+  >
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Суммарная доза
+    </span>
+    <div
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="0"
+      aria-valuetext="0%"
+      class="rt-ProgressRoot rt-r-size-2 rt-variant-surface Progress_progressBar__10lthzj0"
+      data-max="100"
+      data-state="loading"
+      data-value="0"
+      role="progressbar"
+      style="--progress-value: 0;"
+    >
+      <div
+        class="rt-ProgressIndicator"
+        data-max="100"
+        data-state="loading"
+        data-value="0"
+      />
+    </div>
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Принято 
+      0
+       мг из 
+      100
+       мг
+    </span>
+    <span
+      class="rt-Text rt-r-size-5"
+    >
+      Ожидаемое завершение – 
+      16 июля 2025 г.
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Компонент Progress должен отрисоваться с принятой дозировкой 40 1`] = `
+<div
+  class="rt-reset rt-BaseCard rt-Card rt-r-size-1 rt-variant-surface Progress_card__10lthzj1 container_container__1h2gq2x0"
+  data-testid="progress"
+>
+  <div
+    class="rt-Flex rt-r-fd-column rt-r-gap-4"
+  >
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Суммарная доза
+    </span>
+    <div
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="40"
+      aria-valuetext="40%"
+      class="rt-ProgressRoot rt-r-size-2 rt-variant-surface Progress_progressBar__10lthzj0"
+      data-max="100"
+      data-state="loading"
+      data-value="40"
+      role="progressbar"
+      style="--progress-value: 40;"
+    >
+      <div
+        class="rt-ProgressIndicator"
+        data-max="100"
+        data-state="loading"
+        data-value="40"
+      />
+    </div>
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Принято 
+      40
+       мг из 
+      100
+       мг
+    </span>
+    <span
+      class="rt-Text rt-r-size-5"
+    >
+      Ожидаемое завершение – 
+      19 июля 2025 г.
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Компонент Progress должен отрисоваться с принятой дозировкой 100 1`] = `
+<div
+  class="rt-reset rt-BaseCard rt-Card rt-r-size-1 rt-variant-surface Progress_card__10lthzj1 container_container__1h2gq2x0"
+  data-testid="progress"
+>
+  <div
+    class="rt-Flex rt-r-fd-column rt-r-gap-4"
+  >
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Суммарная доза
+    </span>
+    <div
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="100"
+      aria-valuetext="100%"
+      class="rt-ProgressRoot rt-r-size-2 rt-variant-surface Progress_progressBar__10lthzj0"
+      data-max="100"
+      data-state="complete"
+      data-value="100"
+      role="progressbar"
+      style="--progress-value: 100;"
+    >
+      <div
+        class="rt-ProgressIndicator"
+        data-max="100"
+        data-state="complete"
+        data-value="100"
+      />
+    </div>
+    <span
+      class="rt-Text rt-r-size-6"
+    >
+      Принято 
+      100
+       мг из 
+      100
+       мг
+    </span>
+    <span
+      class="rt-Text"
+    >
+      Приём лекарства завершён
+    </span>
+  </div>
+</div>
+`;

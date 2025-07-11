@@ -63,12 +63,12 @@ export const RecordForm = (props: RecordFormProps) => {
         </FormField>
 
         <Flex justify="between">
-          <Submit asChild>
-            <Button size="4">Сохранить</Button>
-          </Submit>
           <Button variant="outline" size="4" type="reset">
             Отмена
           </Button>
+          <Submit asChild>
+            <Button size="4">Сохранить</Button>
+          </Submit>
         </Flex>
       </Flex>
     </Root>
