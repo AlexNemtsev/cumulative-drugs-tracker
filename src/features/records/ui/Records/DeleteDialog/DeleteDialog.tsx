@@ -1,27 +1,16 @@
 import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 
-import { useRecords } from '@/shared/providers/RecordsProvider';
-
 type Props = {
-  recordId: number;
   isOpen: boolean;
-  onOpenChange: (isOpened: boolean) => void;
+  onCancel: () => void;
+  onDelete: () => void;
 };
 
 export const DeleteDialog = (props: Props) => {
-  const { isOpen, onOpenChange, recordId } = props;
-
-  const { deleteRecord } = useRecords();
-
-  const handleDelete = async () => {
-    await deleteRecord(recordId);
-    onOpenChange(false);
-  };
-
-  const handleCloseDialog = () => onOpenChange(false);
+  const { isOpen, onCancel, onDelete } = props;
 
   return (
-    <AlertDialog.Root open={isOpen} onOpenChange={onOpenChange}>
+    <AlertDialog.Root open={isOpen}>
       <AlertDialog.Content>
         <AlertDialog.Title>Удалить запись</AlertDialog.Title>
         <AlertDialog.Description>
@@ -29,12 +18,12 @@ export const DeleteDialog = (props: Props) => {
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>
-            <Button variant="outline" size="4" onClick={handleCloseDialog}>
+            <Button variant="outline" size="4" onClick={onCancel}>
               Нет
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button size="4" onClick={handleDelete}>
+            <Button size="4" onClick={onDelete}>
               Да
             </Button>
           </AlertDialog.Action>

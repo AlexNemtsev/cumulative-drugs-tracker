@@ -9,9 +9,10 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "tests/*": ["./tests/*"]
     },
-    "types": ["vite-plugin-pwa/client"],
+    "types": ["vite-plugin-pwa/client", "vitest/globals", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

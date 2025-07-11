@@ -1,9 +1,9 @@
-import type { FC } from 'react';
-
 import { ErrorDialogProvider } from '@/shared/providers/ErrorDialogProvider';
 
-export const withErrorDialogProvider = (Component: FC) => () => (
+import type { WithProviderHOC } from './WithProviderHOC';
+
+export const withErrorDialogProvider: WithProviderHOC = (Component) => (props) => (
   <ErrorDialogProvider>
-    <Component />
+    <Component {...props} />
   </ErrorDialogProvider>
 );

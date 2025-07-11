@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import type { RecordType } from '@/shared/types/Record';
 
@@ -15,7 +15,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
   const [records, setRecords] = useState<Required<RecordType>[]>([]);
   const { showError } = useErrorDialog();
 
-  const loadRecords = async () => {
+  const loadRecords = useCallback(async () => {
     try {
       const dbRecords = (await getRecords()) as Required<RecordType>[];
       const sortedRecords = dbRecords.toSorted((a, b) => {
@@ -33,13 +33,9 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
         showError('Ошибка при загрузке записей');
       }
     }
-  };
-
-  useEffect(() => {
-    loadRecords();
   }, []);
 
-  const addRecord = async (record: Omit<RecordType, 'id'>) => {
+  const addRecord = useCallback(async (record: Omit<RecordType, 'id'>) => {
     try {
       await addRecordToDb(record);
       await loadRecords();
@@ -50,40 +46,42 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
         showError('Ошибка при сохранении записи');
       }
     }
-  };
+  }, []);
 
-  const updateRecord = async (record: Required<RecordType>) => {
+  const updateRecord = useCallback(async (record: Required<RecordType>) => {
     try {
       await updateRecordToDb(record);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError(error.message);
-        console.error(error);
       } else {
         showError('Ошибка при редактировании записи');
       }
     }
-  };
+  }, []);
 
-  const deleteRecord = async (recordId: number) => {
+  const deleteRecord = useCallback(async (recordId: number) => {
     try {
       await deleteRecordFromDb(recordId);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
         showError(error.message);
-        console.error(error);
       } else {
         showError('Ошибка при удалении записи');
       }
     }
-  };
+  }, []);
 
-  const contextValue = useMemo(
-    () => ({ records, addRecord, updateRecord, deleteRecord, reload: loadRecords }),
+  const recordsValue = useMemo(
+    () => ({ records, addRecord, updateRecord, deleteRecord, loadRecords }),
     [records]
   );
 
-  return <RecordsContext.Provider value={contextValue}>{children}</RecordsContext.Provider>;
+  useEffect(() => {
+    loadRecords();
+  }, []);
+
+  return <RecordsContext.Provider value={recordsValue}>{children}</RecordsContext.Provider>;
 };

@@ -1,8 +1,9 @@
 import { Theme } from '@radix-ui/themes';
-import type { FC } from 'react';
 
-export const withThemeProvider = (Component: FC) => () => (
+import type { WithProviderHOC } from './WithProviderHOC';
+
+export const withThemeProvider: WithProviderHOC = (Component) => (props) => (
   <Theme radius="full" accentColor="crimson">
-    <Component />
+    <Component {...props} />
   </Theme>
 );

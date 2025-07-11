@@ -1,54 +1,40 @@
-import { ContextMenu, Flex, Separator } from '@radix-ui/themes';
-import { useState } from 'react';
+import { Box, ContextMenu, Flex, Separator } from '@radix-ui/themes';
 
 import type { RecordType } from '@/shared/types/Record';
 
-import { RecordModal } from '../RecordModal';
 import { Content } from './Content';
-import { DeleteDialog } from './DeleteDialog';
 import { contextMenuOption } from './Record.css';
 
 type Props = {
   record: Required<RecordType>;
+  onEdit: (record: Required<RecordType>) => void;
+  onDelete: (recordId: number) => void;
 };
 
 export const Record = (props: Props) => {
-  const { record } = props;
+  const { record, onEdit, onDelete } = props;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
-
-  const onEditHandler = () => setIsModalOpen(true);
-  const onDeleteHandler = () => setIsDeleteDialogOpened(true);
+  const onEditHandler = () => onEdit(record);
+  const onDeleteHandler = () => onDelete(record.id);
 
   return (
-    <>
-      <ContextMenu.Root>
-        <Content record={record} />
-        <ContextMenu.Content size="2">
-          <Flex direction="column" gap="1">
-            <ContextMenu.Item onSelect={onEditHandler} className={contextMenuOption}>
-              Изменить
-            </ContextMenu.Item>
-            <Separator size="4" />
-            <ContextMenu.Item onSelect={onDeleteHandler} className={contextMenuOption}>
-              Удалить
-            </ContextMenu.Item>
-          </Flex>
-        </ContextMenu.Content>
-      </ContextMenu.Root>
-      <RecordModal
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        title="Изменить запись"
-        type="edit"
-        record={record}
-      />
-      <DeleteDialog
-        recordId={record.id}
-        isOpen={isDeleteDialogOpened}
-        onOpenChange={setIsDeleteDialogOpened}
-      />
-    </>
+    <ContextMenu.Root>
+      <ContextMenu.Trigger>
+        <Box>
+          <Content record={record} />
+        </Box>
+      </ContextMenu.Trigger>
+      <ContextMenu.Content size="2">
+        <Flex direction="column" gap="1">
+          <ContextMenu.Item onSelect={onEditHandler} className={contextMenuOption}>
+            Изменить
+          </ContextMenu.Item>
+          <Separator size="4" />
+          <ContextMenu.Item onSelect={onDeleteHandler} className={contextMenuOption}>
+            Удалить
+          </ContextMenu.Item>
+        </Flex>
+      </ContextMenu.Content>
+    </ContextMenu.Root>
   );
 };
