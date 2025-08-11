@@ -147,5 +147,11 @@ export default tseslint.config(
     rules: {
       'import/no-unresolved': 'off',
     },
+  },
+  {
+    files: ['./src/shared/lib/Settings/Settings.ts'],
+    rules: {
+      'no-underscore-dangle': 'off',
+    },
   }
 );

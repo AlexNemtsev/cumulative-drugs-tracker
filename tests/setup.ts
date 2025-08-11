@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
 
 import { records } from './mocks/records';
 
@@ -28,3 +28,32 @@ const ResizeObserverMock = vi.fn(() => ({
 }));
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+
+beforeEach(() => {
+  const localStorageMock = (() => {
+    let store: Record<string, string> = {
+      settings: JSON.stringify({
+        name: 'Роаккутан',
+        activeIngredient: 'Изотретиноин',
+        doses: ['8', '16', '20', '24'],
+        targetDose: '10500',
+        dayTarget: '20',
+      }),
+    };
+
+    return {
+      getItem: vi.fn((key: string) => store[key] || null),
+      setItem: vi.fn((key: string, value: string) => {
+        store[key] = value;
+      }),
+      removeItem: vi.fn((key: string) => {
+        delete store[key];
+      }),
+      clear: vi.fn(() => {
+        store = {};
+      }),
+    };
+  })();
+
+  vi.stubGlobal('localStorage', localStorageMock);
+});

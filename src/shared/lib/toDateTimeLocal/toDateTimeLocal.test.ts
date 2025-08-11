@@ -1,4 +1,4 @@
-import { toDateTimeLocal } from './toDateTimeLocal';
+import { toDateTimeLocal } from '.';
 
 describe('функция toDateTimeLocal', () => {
   it('должна корректно отформатировать дату и время', () => {
