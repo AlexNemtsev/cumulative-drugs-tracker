@@ -1,4 +1,4 @@
-export type SettingsType = {
+export type Settings = {
   name: string;
   activeIngredient: string;
   doses: string[];

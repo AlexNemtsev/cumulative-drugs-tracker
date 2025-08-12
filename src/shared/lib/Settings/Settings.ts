@@ -1,39 +1,33 @@
-import type { SettingsType } from '@/shared/types/Settings';
+type Settings = Record<string, string | object>;
 
-export class Settings {
+export class SettingsController {
   private static lsKey = 'settings';
 
-  private static _defaultSettings: SettingsType = {
-    activeIngredient: '',
-    dayTarget: '',
-    doses: [],
-    name: '',
-    targetDose: '',
-  };
-
   static getSettings() {
-    const settings = localStorage.getItem(Settings.lsKey);
+    const settings = localStorage.getItem(SettingsController.lsKey);
 
     if (settings) {
-      return JSON.parse(settings) as unknown as SettingsType;
+      return JSON.parse(settings) as unknown as Settings;
     }
 
-    Settings.setDefaultSettings();
-
-    return Settings.defaultSettings;
+    return null;
   }
 
-  static setSetting<T extends keyof SettingsType>(settingKey: T, settingValue: SettingsType[T]) {
-    const currentSettings = Settings.getSettings();
-    currentSettings[settingKey] = settingValue;
-    localStorage.setItem(Settings.lsKey, JSON.stringify(currentSettings));
+  static getSetting(key: string) {
+    const settings = SettingsController.getSettings();
+
+    if (!settings) {
+      return null;
+    }
+
+    if (key in settings) {
+      return settings[key];
+    }
+
+    return null;
   }
 
-  static setDefaultSettings() {
-    localStorage.setItem(Settings.lsKey, JSON.stringify(Settings._defaultSettings));
-  }
-
-  static get defaultSettings() {
-    return Settings._defaultSettings;
+  static setSettings(settings: Settings) {
+    localStorage.setItem(SettingsController.lsKey, JSON.stringify(settings));
   }
 }

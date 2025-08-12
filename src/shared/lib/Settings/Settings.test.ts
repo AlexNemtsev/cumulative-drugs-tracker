@@ -1,46 +1,64 @@
-import type { SettingsType } from '@/shared/types/Settings';
+import { settings as settingsMock } from 'tests/mocks/settings';
 
-import { Settings } from './Settings';
+import { SettingsController } from './Settings';
 
-const allSettings: SettingsType = {
-  name: 'Роаккутан',
-  activeIngredient: 'Изотретиноин',
-  doses: ['8', '16', '20', '24'],
-  targetDose: '10500',
-  dayTarget: '20',
-};
-
-describe('Класс Settings', () => {
-  it('getSettings возвращает настройки по-умолчанию, если ключ settings не найде в localStorage', () => {
-    localStorage.removeItem('settings');
-
-    const settings = Settings.getSettings();
-
-    expect(settings).toEqual(Settings.defaultSettings);
+describe('SettingsController', () => {
+  beforeEach(() => {
+    localStorage.setItem('settings', JSON.stringify(settingsMock));
   });
 
-  it('getSettings возвращает объект с настройками', () => {
+  it('Позволяет получить все настройки приложения', () => {
     // act
-    const settings = Settings.getSettings();
+    const settings = SettingsController.getSettings();
 
     // assert
-    expect(settings).toEqual(allSettings);
+    expect(settings).toEqual(settingsMock);
   });
 
-  it('setDefaultSettings устанавливает настройки по-умолчанию', () => {
-    Settings.setDefaultSettings();
+  it('Возвращает null, если настройки не заданы', () => {
+    localStorage.removeItem('settings');
 
-    const settings = Settings.getSettings();
+    const settings = SettingsController.getSettings();
 
-    expect(settings).toEqual(Settings.defaultSettings);
+    expect(settings).toBeNull();
   });
 
-  it('setSetting устанавливает заданную настройку', () => {
-    const expected = { ...allSettings, dayTarget: '42' };
+  it('getSetting позволяет получить конкретную настройку приложения', () => {
+    const actualSetting = settingsMock.name;
 
-    Settings.setSetting('dayTarget', '42');
-    const settings = Settings.getSettings();
+    const setting = SettingsController.getSetting('name');
 
-    expect(settings).toEqual(expected);
+    expect(setting).toBe(actualSetting);
+  });
+
+  it('getSetting возвращает null, если настройка не найдена', () => {
+    // act
+    const settings = SettingsController.getSetting('notExistingKey');
+
+    // assert
+    expect(settings).toBeNull();
+  });
+
+  it('getSetting возвращает null, если настройки приложения не заданы', () => {
+    localStorage.removeItem('settings');
+
+    const settings = SettingsController.getSetting('someKey');
+
+    expect(settings).toBeNull();
+  });
+
+  it('Позволяет сохранить переданные настройки', () => {
+    const newSettings = {
+      settingA: 'string',
+      settingB: {
+        someKey: 'string',
+      },
+      array: ['a', 'b', 'c'],
+    };
+
+    SettingsController.setSettings(newSettings);
+    const settings = SettingsController.getSettings();
+
+    expect(settings).toEqual(newSettings);
   });
 });
