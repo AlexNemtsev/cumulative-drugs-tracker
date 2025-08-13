@@ -1,6 +1,6 @@
 import { settings as settingsMock } from 'tests/mocks/settings';
 
-import { SettingsController } from './Settings';
+import { SettingsController } from './SettingsController';
 
 describe('SettingsController', () => {
   beforeEach(() => {
