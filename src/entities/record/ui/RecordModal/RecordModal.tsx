@@ -5,6 +5,7 @@ import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
 import type { RecordType } from '@/shared/types/Record';
 
 import { RecordForm } from '../RecordForm';
+import { form } from './RecordModal.css';
 
 export type RecordModalProps = {
   isOpen?: boolean;
@@ -42,7 +43,12 @@ export const RecordModal = (props: RecordModalProps) => {
         >
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
-          <RecordForm onSubmit={handleSubmit} formValue={formValue} onCancel={onCancel} />
+          <RecordForm
+            onSubmit={handleSubmit}
+            formValue={formValue}
+            onCancel={onCancel}
+            className={form}
+          />
         </Dialog.Content>
       </Dialog.Root>
     )

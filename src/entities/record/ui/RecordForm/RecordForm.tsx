@@ -5,8 +5,8 @@ import { AppSettings } from '@/shared/appSettings';
 import type { RecordType } from '@/shared/types/Record';
 import { DateTime } from '@/shared/ui/DateTime';
 
-import { FormField } from './FormField';
-import { selectContent, selectItem } from './RecordForm.css';
+import { selectContent, selectItem, selectTrigger } from './RecordForm.css';
+import { FormField } from '../../../../shared/ui/FormField';
 
 type Value = Omit<RecordType, 'id' | 'targetDose'>;
 
@@ -14,10 +14,11 @@ export type RecordFormProps = {
   onSubmit: (value: Value) => void;
   onCancel: () => void;
   formValue?: Value;
+  className?: string;
 };
 
 export const RecordForm = (props: RecordFormProps) => {
-  const { onSubmit, onCancel, formValue } = props;
+  const { onSubmit, onCancel, formValue, className } = props;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,9 +40,18 @@ export const RecordForm = (props: RecordFormProps) => {
   };
 
   return (
-    <Root onInvalid={(e) => e.preventDefault()} onSubmit={handleSubmit} onReset={handleCancel}>
+    <Root
+      onInvalid={(e) => e.preventDefault()}
+      onSubmit={handleSubmit}
+      onReset={handleCancel}
+      className={className}
+    >
       <Flex direction="column" gap="3">
-        <FormField name="datetime" label="Время:" valueMissingError="Нужно указать дату и время">
+        <FormField
+          name="datetime"
+          label="Дата и время:"
+          valueMissingError="Нужно указать дату и время"
+        >
           <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
         </FormField>
 
@@ -51,7 +61,7 @@ export const RecordForm = (props: RecordFormProps) => {
             defaultValue={formValue ? formValue.dose : AppSettings.DEFAULT_DOSE}
             size="3"
           >
-            <Select.Trigger />
+            <Select.Trigger className={selectTrigger} />
             <Select.Content className={selectContent}>
               {AppSettings.DOSES.map((dose) => (
                 <Select.Item value={dose} key={dose} className={selectItem}>

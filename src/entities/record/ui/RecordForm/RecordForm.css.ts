@@ -5,3 +5,7 @@ export const selectContent = style({
 });
 
 export const selectItem = style([selectContent]);
+
+export const selectTrigger = style({
+  width: '140px',
+});
