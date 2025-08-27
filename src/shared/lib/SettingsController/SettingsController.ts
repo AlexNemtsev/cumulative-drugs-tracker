@@ -1,9 +1,9 @@
-type Settings = Record<string, string | object>;
+import type { Settings } from '@/shared/types/Settings';
 
 export class SettingsController {
   private static lsKey = 'settings';
 
-  static getSettings() {
+  static getSettings(): Settings | null {
     const settings = localStorage.getItem(SettingsController.lsKey);
 
     if (settings) {
@@ -13,7 +13,7 @@ export class SettingsController {
     return null;
   }
 
-  static getSetting(key: string) {
+  static getSetting<T extends keyof Settings>(key: T): Settings[T] | null {
     const settings = SettingsController.getSettings();
 
     if (!settings) {

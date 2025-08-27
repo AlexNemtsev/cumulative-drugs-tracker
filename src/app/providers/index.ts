@@ -3,6 +3,7 @@ import type { ComponentType } from 'react';
 import { withErrorDialogProvider } from './withErrorDialogProvider';
 import type { WithProviderHOC } from './WithProviderHOC';
 import { withRecordsProvider } from './withRecordsProvider';
+import { withSettingsProvider } from './withSettingsProvider';
 import { withThemeProvider } from './withThemeProvider';
 
 const compose =
@@ -13,5 +14,6 @@ const compose =
 export const withProviders = compose(
   withThemeProvider,
   withErrorDialogProvider,
-  withRecordsProvider
+  withRecordsProvider,
+  withSettingsProvider
 );

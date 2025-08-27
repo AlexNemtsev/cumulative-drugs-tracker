@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
 
-export const label = style({
+export const text = style({
   paddingLeft: 12,
 });
