@@ -10,8 +10,5 @@ export const Navigation = () => (
     <NavLink route="/log" key="/log">
       Журнал
     </NavLink>
-    <NavLink route="/settings" key="/settings">
-      Настройки
-    </NavLink>
   </TabNav.Root>
 );

@@ -69,10 +69,17 @@ export const useForm = () => {
     event.preventDefault();
   };
 
+  const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    navigate('/');
+  };
+
   return {
     registerInputRef,
     handleSubmit,
     handleChange,
     handleInvalid,
+    handleReset,
   };
 };

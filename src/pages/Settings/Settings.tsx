@@ -9,12 +9,17 @@ import { InputField } from './ui/InputField';
 import { InputNumber } from './ui/InputNumber';
 
 export const Settings = () => {
-  const { handleChange, handleSubmit, registerInputRef, handleInvalid } = useForm();
+  const { handleChange, handleSubmit, registerInputRef, handleInvalid, handleReset } = useForm();
 
   return (
     <Flex direction="column" gap="5">
       <PageTitle>Настройки</PageTitle>
-      <Form onInvalid={handleInvalid} onSubmit={handleSubmit} onChange={handleChange}>
+      <Form
+        onInvalid={handleInvalid}
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+        onReset={handleReset}
+      >
         <Flex direction="column" gap="3">
           <InputField
             label="Название"
@@ -54,9 +59,14 @@ export const Settings = () => {
             required
             ref={registerInputRef(SettingsKeys.DAY_TARGET)}
           />
-          <Submit asChild>
-            <Button size="4">Сохранить</Button>
-          </Submit>
+          <Flex justify="between" mt="6">
+            <Button variant="outline" size="4" type="reset">
+              Отмена
+            </Button>
+            <Submit asChild>
+              <Button size="4">Сохранить</Button>
+            </Submit>
+          </Flex>
         </Flex>
       </Form>
     </Flex>

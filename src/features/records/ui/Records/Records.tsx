@@ -4,6 +4,7 @@ import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
 import { Record } from '@/entities/record/ui/Record/Record';
 import { RecordModal } from '@/entities/record/ui/RecordModal';
 import { useRecords } from '@/shared/providers/RecordsProvider';
+import { useSettings } from '@/shared/providers/SettingsProvider';
 import { AddButton } from '@/shared/ui/AddButton';
 
 import { DeleteDialog, useDeleteDialog } from './DeleteDialog';
@@ -11,6 +12,7 @@ import { recordsClass } from './Records.css';
 
 export const Records = () => {
   const { records, deleteRecord, updateRecord, addRecord } = useRecords();
+  const { settings } = useSettings();
   const {
     closeRecordModal,
     handleRecord,
@@ -49,6 +51,7 @@ export const Records = () => {
         onSubmit={handleRecord}
         onCancel={closeRecordModal}
         record={recordToChange}
+        dayTargetDose={settings?.dayTarget ?? '0'}
       />
       <DeleteDialog
         onDelete={handleDeleteRecord}

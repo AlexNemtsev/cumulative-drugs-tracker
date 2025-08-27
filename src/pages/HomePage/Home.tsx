@@ -1,16 +1,18 @@
-import { Flex } from '@radix-ui/themes';
+import { Flex, Text } from '@radix-ui/themes';
 
 import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
 import { RecordModal } from '@/entities/record/ui/RecordModal';
-import { AppSettings } from '@/shared/appSettings';
 import { useRecords } from '@/shared/providers/RecordsProvider';
+import { useSettings } from '@/shared/providers/SettingsProvider';
 import { AddButton } from '@/shared/ui/AddButton';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
 import { Progress } from './ui/Progress';
+import { SettingsButton } from './ui/SettingsButton';
 
 export const Home = () => {
   const { records, addRecord } = useRecords();
+  const { settings } = useSettings();
   const { closeRecordModal, handleRecord, isRecordModalOpened, openRecordModal } = useRecordModal({
     addRecord,
   });
@@ -25,11 +27,15 @@ export const Home = () => {
 
   return (
     <Flex direction="column" gap="5">
-      <PageTitle>Акнекутан</PageTitle>
+      <PageTitle>{settings?.name}</PageTitle>
+      <Text size="5" align="center" weight="light">
+        {settings?.activeIngredient}
+      </Text>
+      <SettingsButton />
       <Progress
         takenDose={takenDose}
-        dayTargetDose={+AppSettings.DAY_TARGET}
-        totalTargetDose={AppSettings.TARGET_DOSE}
+        dayTargetDose={+(settings?.dayTarget ?? 0)}
+        totalTargetDose={+(settings?.targetDose ?? 0)}
         currentDate={currentDate}
       />
       <AddButton onClick={openRecordModal} />
@@ -37,6 +43,7 @@ export const Home = () => {
         isOpen={isRecordModalOpened}
         onSubmit={handleRecord}
         onCancel={closeRecordModal}
+        dayTargetDose={settings?.dayTarget ?? '0'}
       />
     </Flex>
   );

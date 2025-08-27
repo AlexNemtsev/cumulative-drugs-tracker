@@ -12,18 +12,19 @@ export type RecordModalProps = {
   onSubmit: (record: RecordType) => void;
   onCancel: () => void;
   record?: RecordType;
+  dayTargetDose: string;
 };
 
 export const RecordModal = (props: RecordModalProps) => {
-  const { isOpen, record, onSubmit, onCancel } = props;
+  const { isOpen, record, onSubmit, onCancel, dayTargetDose } = props;
 
   const handleSubmit = (newRecord: Omit<RecordType, 'id' | 'targetDose'>) => {
-    onSubmit({ ...newRecord, targetDose: AppSettings.DAY_TARGET });
+    onSubmit({ ...newRecord, targetDose: dayTargetDose });
   };
 
   const defaultRecord: RecordType = {
     dose: AppSettings.DEFAULT_DOSE,
-    targetDose: AppSettings.DAY_TARGET,
+    targetDose: dayTargetDose,
     datetime: toDateTimeLocal(new Date()),
   };
 

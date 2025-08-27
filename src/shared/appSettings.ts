@@ -1,6 +1,6 @@
 export const AppSettings = {
-  DOSES: ['8', '16', '20', '24'],
-  DEFAULT_DOSE: '20',
+  DOSES: ['10', '20', '30'],
+  DEFAULT_DOSE: '30',
   DAY_TARGET: '20',
   TARGET_DOSE: 10500,
 } as const;

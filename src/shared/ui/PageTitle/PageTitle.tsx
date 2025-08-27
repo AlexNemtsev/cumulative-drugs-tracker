@@ -1,7 +1,8 @@
 import { Text } from '@radix-ui/themes';
+import type { ReactNode } from 'react';
 
 type Props = {
-  children: string;
+  children: ReactNode;
 };
 
 export const PageTitle = (props: Props) => {
