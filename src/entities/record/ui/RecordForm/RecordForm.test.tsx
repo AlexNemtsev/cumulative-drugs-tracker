@@ -18,7 +18,7 @@ const setup = (formValue?: RecordFormProps['formValue']) => {
 };
 
 const datetime = '2025-06-11T15:48';
-const dose = '24';
+const dose = AppSettings.DOSES[0];
 
 describe('Компонент RecordForm', () => {
   it('должен отрисовать форму с переданными значениями', () => {

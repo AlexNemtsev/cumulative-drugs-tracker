@@ -13,20 +13,6 @@ export class SettingsController {
     return null;
   }
 
-  static getSetting<T extends keyof Settings>(key: T): Settings[T] | null {
-    const settings = SettingsController.getSettings();
-
-    if (!settings) {
-      return null;
-    }
-
-    if (key in settings) {
-      return settings[key];
-    }
-
-    return null;
-  }
-
   static setSettings(settings: Settings) {
     localStorage.setItem(SettingsController.lsKey, JSON.stringify(settings));
   }

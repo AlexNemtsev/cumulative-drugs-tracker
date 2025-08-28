@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { SettingsController } from '@/shared/lib/SettingsController';
+import { SettingsController } from '@/shared/providers/SettingsProvider/lib/SettingsController';
 import type { Settings } from '@/shared/types/Settings';
 
 import { SettingsContext } from './SettingsContext';

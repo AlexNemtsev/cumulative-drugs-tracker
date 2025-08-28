@@ -23,37 +23,10 @@ describe('SettingsController', () => {
     expect(settings).toBeNull();
   });
 
-  it('getSetting позволяет получить конкретную настройку приложения', () => {
-    const actualSetting = settingsMock.name;
-
-    const setting = SettingsController.getSetting('name');
-
-    expect(setting).toBe(actualSetting);
-  });
-
-  it('getSetting возвращает null, если настройка не найдена', () => {
-    // act
-    const settings = SettingsController.getSetting('notExistingKey');
-
-    // assert
-    expect(settings).toBeNull();
-  });
-
-  it('getSetting возвращает null, если настройки приложения не заданы', () => {
-    localStorage.removeItem('settings');
-
-    const settings = SettingsController.getSetting('someKey');
-
-    expect(settings).toBeNull();
-  });
-
   it('Позволяет сохранить переданные настройки', () => {
     const newSettings = {
-      settingA: 'string',
-      settingB: {
-        someKey: 'string',
-      },
-      array: ['a', 'b', 'c'],
+      ...settingsMock,
+      name: 'test',
     };
 
     SettingsController.setSettings(newSettings);

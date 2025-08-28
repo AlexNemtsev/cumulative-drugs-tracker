@@ -3,15 +3,18 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { AppSettings } from '@/shared/appSettings';
 import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
 import type { RecordType } from '@/shared/types/Record';
+import { settings } from 'tests/mocks/settings';
 
 import { RecordModal, type RecordModalProps } from './RecordModal';
 
 const handleCancel = vi.fn();
 const handleSubmit = vi.fn();
 
+const dayTargetDose = settings.dayTarget;
+
 const testRecord: RecordType = {
-  dose: '16',
-  targetDose: AppSettings.DAY_TARGET.toString(),
+  dose: AppSettings.DOSES[0],
+  targetDose: dayTargetDose,
   datetime: '2025-06-11T15:48',
 };
 
@@ -19,7 +22,13 @@ const setup = (props?: Pick<RecordModalProps, 'record'>) => {
   const { record } = props ?? {};
 
   return render(
-    <RecordModal isOpen onCancel={handleCancel} onSubmit={handleSubmit} record={record} />
+    <RecordModal
+      isOpen
+      onCancel={handleCancel}
+      onSubmit={handleSubmit}
+      record={record}
+      dayTargetDose={dayTargetDose}
+    />
   );
 };
 
@@ -79,7 +88,7 @@ describe('RecordModal', () => {
   it('должна заполнять форму данными по-умолчанию, если данные не переданы', async () => {
     const defaultRecord: RecordType = {
       dose: AppSettings.DEFAULT_DOSE,
-      targetDose: AppSettings.DAY_TARGET,
+      targetDose: dayTargetDose,
       datetime: toDateTimeLocal(new Date()),
     };
 
