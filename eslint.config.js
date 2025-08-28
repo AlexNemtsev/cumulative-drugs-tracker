@@ -131,6 +131,12 @@ export default tseslint.config(
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-key': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          destructuredArrayIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
@@ -146,6 +152,13 @@ export default tseslint.config(
     files: ['./src/app/App.tsx'],
     rules: {
       'import/no-unresolved': 'off',
+    },
+  },
+  {
+    // Нужно для простой и корректной типизации дженерика
+    files: ['./tests/helpers/renderWithForm.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   }
 );

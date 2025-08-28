@@ -1,11 +1,16 @@
 import { Route, Switch } from 'wouter';
 
-import { routes } from '../../routes';
+import { routes } from './routes';
+import { useRedirects } from './useRedirects';
 
-export const Router = () => (
-  <Switch>
-    {routes.map((route) => (
-      <Route path={route.route} component={route.component} key={route.route} />
-    ))}
-  </Switch>
-);
+export const Router = () => {
+  useRedirects();
+
+  return (
+    <Switch>
+      {routes.map((route) => (
+        <Route path={route.route} component={route.component} key={route.route} />
+      ))}
+    </Switch>
+  );
+};

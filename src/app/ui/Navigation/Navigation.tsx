@@ -1,14 +1,14 @@
 import { TabNav } from '@radix-ui/themes';
 
 import { NavLink } from './NavLink';
-import { routes } from '../../routes';
 
 export const Navigation = () => (
   <TabNav.Root justify="center">
-    {routes.map((route) => (
-      <NavLink route={route.route} key={route.route}>
-        {route.title}
-      </NavLink>
-    ))}
+    <NavLink route="/" key="/">
+      Домой
+    </NavLink>
+    <NavLink route="/log" key="/log">
+      Журнал
+    </NavLink>
   </TabNav.Root>
 );

@@ -5,24 +5,26 @@ import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
 import type { RecordType } from '@/shared/types/Record';
 
 import { RecordForm } from '../RecordForm';
+import { form } from './RecordModal.css';
 
 export type RecordModalProps = {
   isOpen?: boolean;
   onSubmit: (record: RecordType) => void;
   onCancel: () => void;
   record?: RecordType;
+  dayTargetDose: string;
 };
 
 export const RecordModal = (props: RecordModalProps) => {
-  const { isOpen, record, onSubmit, onCancel } = props;
+  const { isOpen, record, onSubmit, onCancel, dayTargetDose } = props;
 
   const handleSubmit = (newRecord: Omit<RecordType, 'id' | 'targetDose'>) => {
-    onSubmit({ ...newRecord, targetDose: AppSettings.DAY_TARGET });
+    onSubmit({ ...newRecord, targetDose: dayTargetDose });
   };
 
   const defaultRecord: RecordType = {
     dose: AppSettings.DEFAULT_DOSE,
-    targetDose: AppSettings.DAY_TARGET,
+    targetDose: dayTargetDose,
     datetime: toDateTimeLocal(new Date()),
   };
 
@@ -42,7 +44,12 @@ export const RecordModal = (props: RecordModalProps) => {
         >
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
-          <RecordForm onSubmit={handleSubmit} formValue={formValue} onCancel={onCancel} />
+          <RecordForm
+            onSubmit={handleSubmit}
+            formValue={formValue}
+            onCancel={onCancel}
+            className={form}
+          />
         </Dialog.Content>
       </Dialog.Root>
     )
