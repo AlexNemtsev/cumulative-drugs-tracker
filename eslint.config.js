@@ -131,6 +131,7 @@ export default tseslint.config(
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-key': 'error',
+      'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

@@ -1,0 +1,23 @@
+@import 'react-widgets/styles.css';
+
+.rw-cell.rw-state-selected {
+  position: relative;
+  border-color: white;
+  color: #000;
+  background-color: white;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-35%);
+
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+
+    background-color: var(--accent-9);
+  }
+}

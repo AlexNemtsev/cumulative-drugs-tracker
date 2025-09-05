@@ -18,7 +18,7 @@ const dateConfig: Intl.DateTimeFormatOptions = {
 export const Progress = (props: Props) => {
   const { dayTargetDose, takenDose, totalTargetDose, currentDate } = props;
 
-  const progressBarValue = (takenDose / totalTargetDose) * 100;
+  const progressBarValue = (takenDose / (totalTargetDose || 1)) * 100;
 
   const doseRemained = totalTargetDose - takenDose;
   const etaDays = doseRemained / dayTargetDose;
