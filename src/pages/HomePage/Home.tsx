@@ -1,21 +1,28 @@
 import { Flex, Text } from '@radix-ui/themes';
+import { useState } from 'react';
 
-import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
-import { RecordModal } from '@/entities/record/ui/RecordModal';
+import { Calendar } from '@/features/calendar';
 import { useRecords } from '@/shared/providers/RecordsProvider';
 import { useSettings } from '@/shared/providers/SettingsProvider';
-import { AddButton } from '@/shared/ui/AddButton';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
+import { Modal } from './ui/Modal';
 import { Progress } from './ui/Progress';
 import { SettingsButton } from './ui/SettingsButton';
 
+const areDatesEqual = (date1: Date, date2: Date) =>
+  date1.getDate() === date2.getDate() &&
+  date1.getMonth() === date2.getMonth() &&
+  date1.getFullYear() === date2.getFullYear();
+
 export const Home = () => {
-  const { records, addRecord } = useRecords();
+  const { records } = useRecords();
   const { settings } = useSettings();
-  const { closeRecordModal, handleRecord, isRecordModalOpened, openRecordModal } = useRecordModal({
-    addRecord,
-  });
+
+  const currentDate = new Date();
+
+  const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   const takenDose = records.reduce<number>((acc, record) => {
     const dose = +record.dose;
@@ -23,7 +30,16 @@ export const Home = () => {
     return acc + dose;
   }, 0);
 
-  const currentDate = new Date();
+  const filteredRecords = records.filter((record) => {
+    const recordDate = new Date(record.datetime);
+
+    return areDatesEqual(recordDate, selectedDate);
+  });
+
+  const selectDay = (date: Date) => {
+    setSelectedDate(date);
+    setIsModalOpened(true);
+  };
 
   return (
     <Flex direction="column" gap="5">
@@ -38,12 +54,12 @@ export const Home = () => {
         totalTargetDose={+(settings?.targetDose ?? 0)}
         currentDate={currentDate}
       />
-      <AddButton onClick={openRecordModal} />
-      <RecordModal
-        isOpen={isRecordModalOpened}
-        onSubmit={handleRecord}
-        onCancel={closeRecordModal}
-        dayTargetDose={settings?.dayTarget ?? '0'}
+      <Calendar records={records} onDayClick={selectDay} />
+      <Modal
+        date={selectedDate}
+        records={filteredRecords}
+        isOpen={isModalOpened}
+        onMaskTap={() => setIsModalOpened(false)}
       />
     </Flex>
   );

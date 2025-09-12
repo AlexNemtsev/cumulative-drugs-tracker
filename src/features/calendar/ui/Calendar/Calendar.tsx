@@ -11,12 +11,15 @@ import { renderDay } from '../renderDay';
 
 type Props = {
   records: Required<RecordType>[];
+  onDayClick: (date: Date) => void;
 };
 
 export const Calendar = (props: Props) => {
-  const { records } = props;
+  const { records, onDayClick } = props;
   const today = new Date();
   const [displayedDate, setDisplayedDate] = useState(today);
+
+  const handleChangeDisplayedDate = (date: Date) => setDisplayedDate(date);
 
   return (
     <Localization
@@ -26,9 +29,9 @@ export const Calendar = (props: Props) => {
       <CalendarWidget
         value={today}
         bordered={false}
-        onNavigate={(date) => setDisplayedDate(date)}
-        onChange={(date) => setDisplayedDate(date)}
-        renderDay={renderDay(records, displayedDate)}
+        onNavigate={handleChangeDisplayedDate}
+        onChange={handleChangeDisplayedDate}
+        renderDay={renderDay(records, displayedDate, onDayClick)}
       />
     </Localization>
   );

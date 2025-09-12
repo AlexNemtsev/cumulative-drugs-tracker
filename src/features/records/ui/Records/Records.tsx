@@ -4,15 +4,21 @@ import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
 import { Record } from '@/entities/record/ui/Record/Record';
 import { RecordModal } from '@/entities/record/ui/RecordModal';
 import { useRecords } from '@/shared/providers/RecordsProvider';
-import { useSettings } from '@/shared/providers/SettingsProvider';
+import type { RecordType } from '@/shared/types/Record';
 import { AddButton } from '@/shared/ui/AddButton';
 
 import { DeleteDialog, useDeleteDialog } from './DeleteDialog';
 import { recordsClass } from './Records.css';
 
-export const Records = () => {
-  const { records, deleteRecord, updateRecord, addRecord } = useRecords();
-  const { settings } = useSettings();
+type Props = {
+  dayRecords: Required<RecordType>[];
+  dateShort: string;
+};
+
+export const Records = (props: Props) => {
+  const { dayRecords, dateShort } = props;
+
+  const { deleteRecord, updateRecord, addRecord } = useRecords();
   const {
     closeRecordModal,
     handleRecord,
@@ -29,10 +35,10 @@ export const Records = () => {
     useDeleteDialog(deleteRecord);
 
   return (
-    <Flex direction="column" gap="5">
-      {records.length ? (
+    <Flex direction="column" gap="5" mt="2">
+      {dayRecords.length ? (
         <ScrollArea type="scroll" className={recordsClass}>
-          {records.map((record) => (
+          {dayRecords.map((record) => (
             <Record
               key={record.id}
               record={record}
@@ -51,7 +57,7 @@ export const Records = () => {
         onSubmit={handleRecord}
         onCancel={closeRecordModal}
         record={recordToChange}
-        dayTargetDose={settings?.dayTarget ?? '0'}
+        dateShort={dateShort}
       />
       <DeleteDialog
         onDelete={handleDeleteRecord}

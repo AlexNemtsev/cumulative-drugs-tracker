@@ -1,19 +1,20 @@
 import { Root, Submit } from '@radix-ui/react-form';
-import { Button, Flex, Select } from '@radix-ui/themes';
+import { Button, Flex, Select, TextField } from '@radix-ui/themes';
 
 import { AppSettings } from '@/shared/appSettings';
-import type { RecordType } from '@/shared/types/Record';
-import { DateTime } from '@/shared/ui/DateTime';
 
-import { selectContent, selectItem, selectTrigger } from './RecordForm.css';
+import { selectContent, selectItem, selectTrigger, timePicker } from './RecordForm.css';
 import { FormField } from '../../../../shared/ui/FormField';
 
-type Value = Omit<RecordType, 'id' | 'targetDose'>;
+export type FormValue = {
+  time: string;
+  dose: string;
+};
 
 export type RecordFormProps = {
-  onSubmit: (value: Value) => void;
+  onSubmit: (value: FormValue) => void;
   onCancel: () => void;
-  formValue?: Value;
+  formValue: FormValue;
   className?: string;
 };
 
@@ -26,10 +27,10 @@ export const RecordForm = (props: RecordFormProps) => {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const datetime = formData.get('datetime') as string;
+    const time = formData.get('time') as string;
     const dose = formData.get('dose') as string;
 
-    onSubmit({ datetime, dose });
+    onSubmit({ time, dose });
     form.reset();
   };
 
@@ -46,13 +47,16 @@ export const RecordForm = (props: RecordFormProps) => {
       onReset={handleCancel}
       className={className}
     >
-      <Flex direction="column" gap="3">
-        <FormField
-          name="datetime"
-          label="Дата и время:"
-          valueMissingError="Нужно указать дату и время"
-        >
-          <DateTime value={formValue ? formValue.datetime : ''} required name="datetime" />
+      <Flex justify="between">
+        <FormField name="datetime" label="Время:" valueMissingError="Нужно время">
+          <TextField.Root
+            type="time"
+            value={formValue ? formValue.time : ''}
+            required
+            name="time"
+            size="3"
+            className={timePicker}
+          />
         </FormField>
 
         <FormField name="dose" label="Дозировка, мг:">
@@ -71,15 +75,16 @@ export const RecordForm = (props: RecordFormProps) => {
             </Select.Content>
           </Select.Root>
         </FormField>
+      </Flex>
 
-        <Flex justify="between">
-          <Button variant="outline" size="4" type="reset">
-            Отмена
-          </Button>
-          <Submit asChild>
-            <Button size="4">Сохранить</Button>
-          </Submit>
-        </Flex>
+      <Flex justify="between" mt="5">
+        <Button variant="outline" size="4" type="reset">
+          Отмена
+        </Button>
+
+        <Submit asChild>
+          <Button size="4">Сохранить</Button>
+        </Submit>
       </Flex>
     </Root>
   );

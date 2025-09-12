@@ -18,9 +18,6 @@ export const Content = (props: Props) => {
   return (
     <Box className={container} data-testid="record-content">
       <Flex direction="column" gap="2">
-        <Text size="6" weight="medium">
-          {date.toLocaleDateString('ru-RU')}
-        </Text>
         <Flex justify="between">
           <Text size="6" weight="medium">
             {date.toLocaleTimeString('ru-RU', {

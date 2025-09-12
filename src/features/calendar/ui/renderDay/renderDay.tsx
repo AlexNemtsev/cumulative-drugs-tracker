@@ -1,3 +1,5 @@
+import { IconButton } from '@radix-ui/themes';
+
 import type { RecordType } from '@/shared/types/Record';
 
 import { getCurrentMonthProgresses } from '../../lib/getCurrentMonthProgresses';
@@ -10,16 +12,19 @@ type Arguments = {
 };
 
 export const renderDay =
-  (records: Required<RecordType>[], currentDate: Date) => (args: Arguments) => {
+  (records: Required<RecordType>[], currentDate: Date, onClick: (date: Date) => void) =>
+  (args: Arguments) => {
     const { date, label } = args;
 
     const currentMonthProgresses = getCurrentMonthProgresses(records, currentDate);
 
     if (date.getMonth() === currentDate.getMonth()) {
       return (
-        <CircularProgress progress={currentMonthProgresses.get(date.getDate()) ?? 0}>
-          <div className={dayOfWeek[date.getDay() === 0 ? 'weekend' : 'weekday']}>{label}</div>
-        </CircularProgress>
+        <IconButton variant="ghost" onClick={() => onClick(date)}>
+          <CircularProgress progress={currentMonthProgresses.get(date.getDate()) ?? 0}>
+            <div className={dayOfWeek[date.getDay() === 0 ? 'weekend' : 'weekday']}>{label}</div>
+          </CircularProgress>
+        </IconButton>
       );
     }
 

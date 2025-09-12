@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useDeleteDialog = (deleteRecord?: (recordId: number) => Promise<void>) => {
+export const useDeleteDialog = (deleteRecord: (recordId: number) => Promise<void>) => {
   const [recordIdToDelete, setRecordIdToDelete] = useState<number>();
   const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
 
@@ -15,7 +15,7 @@ export const useDeleteDialog = (deleteRecord?: (recordId: number) => Promise<voi
   };
 
   const handleDeleteRecord = async () => {
-    if (recordIdToDelete && deleteRecord) {
+    if (recordIdToDelete) {
       await deleteRecord(recordIdToDelete);
     }
 

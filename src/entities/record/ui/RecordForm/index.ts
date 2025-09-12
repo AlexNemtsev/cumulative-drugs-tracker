@@ -1,1 +1,1 @@
-export { RecordForm } from './RecordForm';
+export { RecordForm, type FormValue } from './RecordForm';
