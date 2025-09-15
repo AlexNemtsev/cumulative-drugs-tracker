@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppSettings } from '@/shared/appSettings';
-import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
+import { toDateTimeLocal } from '@/shared/lib/toDateLocal';
 import type { RecordType } from '@/shared/types/Record';
 import { settings } from 'tests/mocks/settings';
 

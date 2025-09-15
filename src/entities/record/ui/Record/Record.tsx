@@ -1,13 +1,13 @@
 import { Box, ContextMenu, Flex, Separator } from '@radix-ui/themes';
 
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { Content } from './Content';
 import { contextMenuOption } from './Record.css';
 
 type Props = {
-  record: Required<RecordType>;
-  onEdit: (record: Required<RecordType>) => void;
+  record: Required<DoseRecord>;
+  onEdit: (record: Required<DoseRecord>) => void;
   onDelete: (recordId: number) => void;
 };
 
@@ -21,7 +21,7 @@ export const Record = (props: Props) => {
     <ContextMenu.Root>
       <ContextMenu.Trigger>
         <Box>
-          <Content record={record} />
+          <Content time={record.time} dose={record.dose} />
         </Box>
       </ContextMenu.Trigger>
       <ContextMenu.Content size="2">

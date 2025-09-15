@@ -1,12 +1,11 @@
 import { Dialog } from '@radix-ui/themes';
 
 import { Records } from '@/features/records';
-import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 type Props = {
   isOpen: boolean;
-  records: Required<RecordType>[];
+  records: Required<DoseRecord>[];
   date: Date;
   onMaskTap: () => void;
 };
@@ -20,8 +19,6 @@ export const Modal = (props: Props) => {
     day: 'numeric',
   });
 
-  const dateShort = toDateTimeLocal(date).split('T')[0];
-
   return (
     <Dialog.Root open={isOpen} onOpenChange={onMaskTap}>
       <Dialog.Content
@@ -31,9 +28,7 @@ export const Modal = (props: Props) => {
       >
         <Dialog.Title align="center">Записи</Dialog.Title>
         <Dialog.Description align="center">{dateString}</Dialog.Description>
-        <Records dayRecords={records} dateShort={dateShort} />
-        {/* <AddButton onClick={openRecordModal} />
-        <RecordModal isOpen={isRecordModalOpened} onClose={closeRecordModal} date={dateShort} /> */}
+        <Records dayRecords={records} date={date} />
       </Dialog.Content>
     </Dialog.Root>
   );

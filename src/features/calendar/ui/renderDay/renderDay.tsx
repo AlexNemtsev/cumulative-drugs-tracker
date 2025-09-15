@@ -1,6 +1,6 @@
 import { IconButton } from '@radix-ui/themes';
 
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { getCurrentMonthProgresses } from '../../lib/getCurrentMonthProgresses';
 import { CircularProgress } from '../CircularProgress';
@@ -12,7 +12,7 @@ type Arguments = {
 };
 
 export const renderDay =
-  (records: Required<RecordType>[], currentDate: Date, onClick: (date: Date) => void) =>
+  (records: Required<DoseRecord>[], currentDate: Date, onClick: (date: Date) => void) =>
   (args: Arguments) => {
     const { date, label } = args;
 

@@ -1,8 +1,8 @@
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
-export const getCurrentMonthProgresses = (records: Required<RecordType>[], currentDate: Date) =>
+export const getCurrentMonthProgresses = (records: Required<DoseRecord>[], currentDate: Date) =>
   records.reduce<Map<number, number>>((acc, record) => {
-    const date = new Date(record.datetime);
+    const { date } = record;
 
     const isDateInCurrentMonth =
       date.getMonth() === currentDate.getMonth() &&

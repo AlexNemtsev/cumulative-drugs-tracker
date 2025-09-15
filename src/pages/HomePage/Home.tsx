@@ -30,11 +30,7 @@ export const Home = () => {
     return acc + dose;
   }, 0);
 
-  const filteredRecords = records.filter((record) => {
-    const recordDate = new Date(record.datetime);
-
-    return areDatesEqual(recordDate, selectedDate);
-  });
+  const filteredRecords = records.filter((record) => areDatesEqual(record.date, selectedDate));
 
   const selectDay = (date: Date) => {
     setSelectedDate(date);

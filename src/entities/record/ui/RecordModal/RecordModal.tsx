@@ -2,30 +2,30 @@ import { Dialog } from '@radix-ui/themes';
 
 import { AppSettings } from '@/shared/appSettings';
 import { useSettings } from '@/shared/providers/SettingsProvider';
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { RecordForm, type FormValue } from '../RecordForm';
 import { form } from './RecordModal.css';
 
 export type RecordModalProps = {
   isOpen?: boolean;
-  onSubmit: (record: RecordType) => void;
+  onSubmit: (record: DoseRecord) => void;
   onCancel: () => void;
-  record?: RecordType;
-  dateShort: string;
+  record?: DoseRecord;
+  date: Date;
 };
 
 export const RecordModal = (props: RecordModalProps) => {
-  const { isOpen, record, onSubmit, onCancel, dateShort } = props;
+  const { isOpen, record, onSubmit, onCancel, date } = props;
 
   const { settings } = useSettings();
   const dayTargetDose = settings?.dayTarget ?? '0';
 
   const handleSubmit = (newRecord: FormValue) => {
     onSubmit({
-      dose: newRecord.dose,
+      ...newRecord,
       targetDose: dayTargetDose,
-      datetime: `${dateShort}T${newRecord.time}`,
+      date,
     });
   };
 
@@ -38,7 +38,7 @@ export const RecordModal = (props: RecordModalProps) => {
     }),
   };
 
-  const formValue = record ? { ...record, time: record.datetime.split('T')[1] } : defaultRecord;
+  const formValue = record ? { ...record, time: record.time } : defaultRecord;
   const title = record ? 'Изменить запись' : 'Создать запись';
   const description = record
     ? 'Изменить запись о приёме лекарства'

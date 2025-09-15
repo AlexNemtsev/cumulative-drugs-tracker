@@ -3,7 +3,7 @@ import { openDB, type IDBPDatabase } from 'idb';
 import type { ReactNode } from 'react';
 import type { MockInstance } from 'vitest';
 
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 import { records } from 'tests/mocks/records';
 
 import { useRecords } from './useRecords';
@@ -22,14 +22,23 @@ beforeEach(async () => {
   mockDb = await openDB('doses');
 });
 
-const testRecord: Required<RecordType> = {
-  datetime: '2025-06-07T09:21',
+const testRecord: Required<DoseRecord> = {
+  date: new Date('2025-06-07'),
+  time: '2025-06-07T09:21',
   targetDose: '16',
   dose: '16',
   id: 1,
 };
 
 const testError = 'test error';
+
+const mappedRecords = records.map((record) => ({
+  id: record.id,
+  date: new Date(record.datetime),
+  time: record.datetime.split('T')[1],
+  dose: record.dose,
+  targetDose: record.targetDose,
+}));
 
 describe('Хук useRecords', () => {
   it('Возвращает все записи из бд', async () => {
@@ -41,7 +50,7 @@ describe('Хук useRecords', () => {
 
     await waitFor(() => {
       expect(mockDb.getAll).toHaveBeenCalledWith('records');
-      expect(result.current.records).toEqual(records);
+      expect(result.current.records).toEqual(mappedRecords);
     });
   });
 

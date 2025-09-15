@@ -5,12 +5,13 @@ import Localization from 'react-widgets/esm/Localization';
 import 'react-widgets/styles.css';
 
 import './Calendar.css';
-import type { RecordType } from '@/shared/types/Record';
+
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { renderDay } from '../renderDay';
 
 type Props = {
-  records: Required<RecordType>[];
+  records: Required<DoseRecord>[];
   onDayClick: (date: Date) => void;
 };
 

@@ -4,19 +4,19 @@ import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
 import { Record } from '@/entities/record/ui/Record/Record';
 import { RecordModal } from '@/entities/record/ui/RecordModal';
 import { useRecords } from '@/shared/providers/RecordsProvider';
-import type { RecordType } from '@/shared/types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 import { AddButton } from '@/shared/ui/AddButton';
 
 import { DeleteDialog, useDeleteDialog } from './DeleteDialog';
 import { recordsClass } from './Records.css';
 
 type Props = {
-  dayRecords: Required<RecordType>[];
-  dateShort: string;
+  dayRecords: Required<DoseRecord>[];
+  date: Date;
 };
 
 export const Records = (props: Props) => {
-  const { dayRecords, dateShort } = props;
+  const { dayRecords, date } = props;
 
   const { deleteRecord, updateRecord, addRecord } = useRecords();
   const {
@@ -57,7 +57,7 @@ export const Records = (props: Props) => {
         onSubmit={handleRecord}
         onCancel={closeRecordModal}
         record={recordToChange}
-        dateShort={dateShort}
+        date={date}
       />
       <DeleteDialog
         onDelete={handleDeleteRecord}

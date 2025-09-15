@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
-import type { RecordType } from '../../types/Record';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 type Records = {
-  records: Required<RecordType>[];
-  addRecord: (record: Omit<RecordType, 'id'>) => Promise<void>;
-  updateRecord: (record: Required<RecordType>) => Promise<void>;
+  records: Required<DoseRecord>[];
+  addRecord: (record: Omit<DoseRecord, 'id'>) => Promise<void>;
+  updateRecord: (record: Required<DoseRecord>) => Promise<void>;
   deleteRecord: (recordId: number) => Promise<void>;
   loadRecords: () => Promise<void>;
 };
