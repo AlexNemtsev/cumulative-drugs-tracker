@@ -1,18 +1,19 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppSettings } from '@/shared/appSettings';
-import { toDateTimeLocal } from '@/shared/lib/toDateLocal';
-import type { RecordType } from '@/shared/types/Record';
+import { toDateTimeLocal } from '@/shared/providers/RecordsProvider/lib/toDateLocal';
 import { settings } from 'tests/mocks/settings';
 
 import { RecordModal, type RecordModalProps } from './RecordModal';
+
+import type { DBRecord } from '@/shared/types/Record';
 
 const handleCancel = vi.fn();
 const handleSubmit = vi.fn();
 
 const dayTargetDose = settings.dayTarget;
 
-const testRecord: RecordType = {
+const testRecord: DBRecord = {
   dose: AppSettings.DOSES[0],
   targetDose: dayTargetDose,
   datetime: '2025-06-11T15:48',
@@ -86,7 +87,7 @@ describe('RecordModal', () => {
   });
 
   it('должна заполнять форму данными по-умолчанию, если данные не переданы', async () => {
-    const defaultRecord: RecordType = {
+    const defaultRecord: DBRecord = {
       dose: AppSettings.DEFAULT_DOSE,
       targetDose: dayTargetDose,
       datetime: toDateTimeLocal(new Date()),

@@ -1,4 +1,4 @@
-import type { Settings } from '../types/Settings';
+import type { Settings } from '../../../shared/types/Settings';
 
 export const SettingsKeys: Record<string, keyof Settings> = {
   NAME: 'name',

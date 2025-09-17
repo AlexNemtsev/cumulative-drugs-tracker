@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { withProviders } from '@/app/providers';
-import type { RecordType } from '@/shared/types/Record';
 
 import { Record } from './Record';
 
-const testRecord: Required<RecordType> = {
+import type { DBRecord } from '@/shared/types/Record';
+
+const testRecord: Required<DBRecord> = {
   datetime: '2025-06-07T09:21',
   targetDose: '16',
   dose: '16',

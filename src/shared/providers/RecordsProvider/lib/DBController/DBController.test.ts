@@ -1,9 +1,8 @@
 import { openDB, type IDBPDatabase } from 'idb';
 
-import type { RecordType } from '@/shared/types/Record';
 import { records as recordsMock } from 'tests/mocks/records';
 
-import { addRecord, deleteRecord, getRecords, updateRecord } from './indexeddb';
+import { addRecord, deleteRecord, getRecords, updateRecord, type DBRecord } from './DBController';
 
 let mockDb: IDBPDatabase<unknown>;
 
@@ -11,7 +10,7 @@ beforeEach(async () => {
   mockDb = await openDB('doses');
 });
 
-const testRecord: Required<RecordType> = {
+const testRecord: Required<DBRecord> = {
   datetime: '2025-06-07T09:21',
   targetDose: '16',
   dose: '16',

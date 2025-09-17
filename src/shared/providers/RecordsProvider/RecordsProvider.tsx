@@ -1,15 +1,9 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { toDateLocal } from '@/shared/lib/toDateLocal';
+import { toDateLocal } from '@/shared/providers/RecordsProvider/lib/toDateLocal';
 import type { DoseRecord } from '@/shared/types/DoseRecord';
-import type { RecordType } from '@/shared/types/Record';
 
-import {
-  getRecords,
-  addRecord as addRecordToDb,
-  updateRecord as updateRecordToDb,
-  deleteRecord as deleteRecordFromDb,
-} from './lib/indexeddb';
+import { DBController, type DBRecord } from './lib/DBController';
 import { RecordsContext } from './RecordsContext';
 import { useErrorDialog } from '../ErrorDialogProvider';
 
@@ -19,7 +13,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
 
   const loadRecords = useCallback(async () => {
     try {
-      const dbRecords = (await getRecords()) as Required<RecordType>[];
+      const dbRecords = (await DBController.getRecords()) as Required<DBRecord>[];
       const sortedRecords = dbRecords
         .toSorted((a, b) => {
           const aTime = new Date(a.datetime);
@@ -53,7 +47,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
         targetDose: record.targetDose,
       };
 
-      await addRecordToDb(newRecord);
+      await DBController.addRecord(newRecord);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -73,7 +67,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
         id: record.id,
       };
 
-      await updateRecordToDb(updatedRecord);
+      await DBController.updateRecord(updatedRecord);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -86,7 +80,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteRecord = useCallback(async (recordId: number) => {
     try {
-      await deleteRecordFromDb(recordId);
+      await DBController.deleteRecord(recordId);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {

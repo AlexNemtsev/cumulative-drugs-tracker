@@ -1,7 +1,7 @@
 import { Form, Submit } from '@radix-ui/react-form';
 import { Button, Flex } from '@radix-ui/themes';
 
-import { SettingsKeys } from '@/shared/constants/settingsKeys';
+import { SettingsKeys } from '@/pages/Settings/constants/settingsKeys';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
 import { useForm } from './hooks/useForm';

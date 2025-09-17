@@ -2,9 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { withThemeProvider } from '@/app/providers/withThemeProvider';
 import { AppSettings } from '@/shared/appSettings';
-import type { RecordType } from '@/shared/types/Record';
 
 import { RecordForm, type RecordFormProps } from './RecordForm';
+
+import type { DBRecord } from '@/shared/types/Record';
 
 const handleSubmit = vi.fn();
 const handleCancel = vi.fn();
@@ -83,7 +84,7 @@ describe('Компонент RecordForm', () => {
   });
 
   it('должна отобразиться ошибка при сабмите, если дата не заполнена', () => {
-    setup({ dose } as Omit<RecordType, 'id' | 'targetDose'>);
+    setup({ dose } as Omit<DBRecord, 'id' | 'targetDose'>);
 
     const saveButton = screen.getByRole('button', {
       name: /сохранить/i,

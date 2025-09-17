@@ -6,7 +6,7 @@ import { useRecords } from '@/shared/providers/RecordsProvider';
 import { useSettings } from '@/shared/providers/SettingsProvider';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
-import { Modal } from './ui/Modal';
+import { DayModal } from './ui/DayModal';
 import { Progress } from './ui/Progress';
 import { SettingsButton } from './ui/SettingsButton';
 
@@ -51,11 +51,11 @@ export const Home = () => {
         currentDate={currentDate}
       />
       <Calendar records={records} onDayClick={selectDay} />
-      <Modal
+      <DayModal
         date={selectedDate}
         records={filteredRecords}
         isOpen={isModalOpened}
-        onMaskTap={() => setIsModalOpened(false)}
+        onClose={() => setIsModalOpened(false)}
       />
     </Flex>
   );
