@@ -161,5 +161,12 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
     },
+  },
+  {
+    files: ['./src/shared/providers/RecordsProvider/useRecords.test.tsx'],
+    rules: {
+      'react/jsx-no-useless-fragment': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
   }
 );

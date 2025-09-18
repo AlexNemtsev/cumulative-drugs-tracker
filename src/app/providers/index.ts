@@ -14,6 +14,6 @@ const compose =
 export const withProviders = compose(
   withThemeProvider,
   withErrorDialogProvider,
-  withRecordsProvider,
-  withSettingsProvider
+  withSettingsProvider,
+  withRecordsProvider
 );

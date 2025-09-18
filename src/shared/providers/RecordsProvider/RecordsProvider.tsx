@@ -6,10 +6,14 @@ import type { DoseRecord } from '@/shared/types/DoseRecord';
 import { DBController, type DBRecord } from './lib/DBController';
 import { RecordsContext } from './RecordsContext';
 import { useErrorDialog } from '../ErrorDialogProvider';
+import { useSettings } from '../SettingsProvider';
 
 export const RecordsProvider = ({ children }: { children: ReactNode }) => {
   const [records, setRecords] = useState<Required<DoseRecord>[]>([]);
   const { showError } = useErrorDialog();
+  const { settings } = useSettings();
+
+  const dayTargetDose = settings?.dayTarget ?? '0';
 
   const loadRecords = useCallback(async () => {
     try {
@@ -39,12 +43,12 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const addRecord = useCallback(async (record: Omit<DoseRecord, 'id'>) => {
+  const addRecord = useCallback(async (record: Omit<DoseRecord, 'id' | 'targetDose'>) => {
     try {
       const newRecord = {
         datetime: `${toDateLocal(record.date)}T${record.time}`,
         dose: record.dose,
-        targetDose: record.targetDose,
+        targetDose: dayTargetDose,
       };
 
       await DBController.addRecord(newRecord);
@@ -58,12 +62,12 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const updateRecord = useCallback(async (record: Required<DoseRecord>) => {
+  const updateRecord = useCallback(async (record: Omit<Required<DoseRecord>, 'targetDose'>) => {
     try {
       const updatedRecord = {
         datetime: `${toDateLocal(record.date)}T${record.time}`,
         dose: record.dose,
-        targetDose: record.targetDose,
+        targetDose: dayTargetDose,
         id: record.id,
       };
 

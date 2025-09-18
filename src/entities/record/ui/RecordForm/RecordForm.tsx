@@ -2,14 +2,12 @@ import { Root, Submit } from '@radix-ui/react-form';
 import { Button, Flex, Select, TextField } from '@radix-ui/themes';
 
 import { AppSettings } from '@/shared/appSettings';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
+import { FormField } from '@/shared/ui/FormField';
 
 import { selectContent, selectItem, selectTrigger, timePicker } from './RecordForm.css';
-import { FormField } from '../../../../shared/ui/FormField';
 
-export type FormValue = {
-  time: string;
-  dose: string;
-};
+export type FormValue = Pick<DoseRecord, 'time' | 'dose'>;
 
 export type RecordFormProps = {
   onSubmit: (value: FormValue) => void;
@@ -48,10 +46,10 @@ export const RecordForm = (props: RecordFormProps) => {
       className={className}
     >
       <Flex justify="between">
-        <FormField name="datetime" label="Время:" valueMissingError="Нужно время">
+        <FormField name="datetime" label="Время:" valueMissingError="Нужно указать время">
           <TextField.Root
             type="time"
-            value={formValue ? formValue.time : ''}
+            defaultValue={formValue.time}
             required
             name="time"
             size="3"
@@ -60,11 +58,7 @@ export const RecordForm = (props: RecordFormProps) => {
         </FormField>
 
         <FormField name="dose" label="Дозировка, мг:">
-          <Select.Root
-            name="dose"
-            defaultValue={formValue ? formValue.dose : AppSettings.DEFAULT_DOSE}
-            size="3"
-          >
+          <Select.Root name="dose" defaultValue={formValue.dose} size="3">
             <Select.Trigger className={selectTrigger} />
             <Select.Content className={selectContent}>
               {AppSettings.DOSES.map((dose) => (

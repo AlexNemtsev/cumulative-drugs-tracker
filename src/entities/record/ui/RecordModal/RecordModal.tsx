@@ -1,41 +1,28 @@
 import { Dialog } from '@radix-ui/themes';
 
 import { AppSettings } from '@/shared/appSettings';
-import { useSettings } from '@/shared/providers/SettingsProvider';
-import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { RecordForm, type FormValue } from '../RecordForm';
+import { getCurrentTime } from './getCurrentTime';
 import { form } from './RecordModal.css';
 
 export type RecordModalProps = {
   isOpen?: boolean;
-  onSubmit: (record: DoseRecord) => void;
+  onSubmit: (record: FormValue) => void;
   onCancel: () => void;
-  record?: DoseRecord;
-  date: Date;
+  record?: FormValue;
 };
 
 export const RecordModal = (props: RecordModalProps) => {
-  const { isOpen, record, onSubmit, onCancel, date } = props;
-
-  const { settings } = useSettings();
-  const dayTargetDose = settings?.dayTarget ?? '0';
+  const { isOpen, record, onSubmit, onCancel } = props;
 
   const handleSubmit = (newRecord: FormValue) => {
-    onSubmit({
-      ...newRecord,
-      targetDose: dayTargetDose,
-      date,
-    });
+    onSubmit(newRecord);
   };
 
   const defaultRecord: FormValue = {
     dose: AppSettings.DEFAULT_DOSE,
-    time: new Date().toLocaleTimeString('ru-RU', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }),
+    time: getCurrentTime(),
   };
 
   const formValue = record ? { ...record, time: record.time } : defaultRecord;

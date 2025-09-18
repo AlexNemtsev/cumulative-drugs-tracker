@@ -1,6 +1,7 @@
 import { Button, Dialog, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 
+import type { FormValue } from '@/entities/record/ui/RecordForm';
 import { RecordModal } from '@/entities/record/ui/RecordModal';
 import { Records } from '@/features/records';
 import { useRecords } from '@/shared/providers/RecordsProvider';
@@ -20,8 +21,8 @@ export const DayModal = (props: Props) => {
 
   const [isRecordModalOpened, setIsRecordModalOpened] = useState(false);
 
-  const handleAddSubmit = async (record: DoseRecord) => {
-    await addRecord(record);
+  const handleAddSubmit = async (record: FormValue) => {
+    await addRecord({ ...record, date });
     setIsRecordModalOpened(false);
   };
 
@@ -45,7 +46,6 @@ export const DayModal = (props: Props) => {
           isOpen={isRecordModalOpened}
           onSubmit={handleAddSubmit}
           onCancel={() => setIsRecordModalOpened(false)}
-          date={date}
         />
         <Flex justify="between" mt="4">
           <Button size="4" onClick={onMaskTap} variant="outline">
