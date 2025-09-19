@@ -1,29 +1,37 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import type { RecordType } from '@/shared/types/Record';
+import { toDateLocal } from '@/shared/providers/RecordsProvider/lib/toDateLocal';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
-import {
-  getRecords,
-  addRecord as addRecordToDb,
-  updateRecord as updateRecordToDb,
-  deleteRecord as deleteRecordFromDb,
-} from './lib/indexeddb';
+import { DBController, type DBRecord } from './lib/DBController';
 import { RecordsContext } from './RecordsContext';
 import { useErrorDialog } from '../ErrorDialogProvider';
+import { useSettings } from '../SettingsProvider';
 
 export const RecordsProvider = ({ children }: { children: ReactNode }) => {
-  const [records, setRecords] = useState<Required<RecordType>[]>([]);
+  const [records, setRecords] = useState<Required<DoseRecord>[]>([]);
   const { showError } = useErrorDialog();
+  const { settings } = useSettings();
+
+  const dayTargetDose = settings?.dayTarget ?? '0';
 
   const loadRecords = useCallback(async () => {
     try {
-      const dbRecords = (await getRecords()) as Required<RecordType>[];
-      const sortedRecords = dbRecords.toSorted((a, b) => {
-        const aTime = new Date(a.datetime);
-        const bTime = new Date(b.datetime);
+      const dbRecords = (await DBController.getRecords()) as Required<DBRecord>[];
+      const sortedRecords = dbRecords
+        .toSorted((a, b) => {
+          const aTime = new Date(a.datetime);
+          const bTime = new Date(b.datetime);
 
-        return bTime.getTime() - aTime.getTime();
-      });
+          return bTime.getTime() - aTime.getTime();
+        })
+        .map((record) => ({
+          id: record.id,
+          date: new Date(record.datetime),
+          time: record.datetime.split('T')[1],
+          dose: record.dose,
+          targetDose: record.targetDose,
+        }));
 
       setRecords(sortedRecords);
     } catch (error: unknown) {
@@ -35,9 +43,15 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const addRecord = useCallback(async (record: Omit<RecordType, 'id'>) => {
+  const addRecord = useCallback(async (record: Omit<DoseRecord, 'id' | 'targetDose'>) => {
     try {
-      await addRecordToDb(record);
+      const newRecord = {
+        datetime: `${toDateLocal(record.date)}T${record.time}`,
+        dose: record.dose,
+        targetDose: dayTargetDose,
+      };
+
+      await DBController.addRecord(newRecord);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -48,9 +62,16 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const updateRecord = useCallback(async (record: Required<RecordType>) => {
+  const updateRecord = useCallback(async (record: Omit<Required<DoseRecord>, 'targetDose'>) => {
     try {
-      await updateRecordToDb(record);
+      const updatedRecord = {
+        datetime: `${toDateLocal(record.date)}T${record.time}`,
+        dose: record.dose,
+        targetDose: dayTargetDose,
+        id: record.id,
+      };
+
+      await DBController.updateRecord(updatedRecord);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -63,7 +84,7 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteRecord = useCallback(async (recordId: number) => {
     try {
-      await deleteRecordFromDb(recordId);
+      await DBController.deleteRecord(recordId);
       await loadRecords();
     } catch (error: unknown) {
       if (error instanceof Error) {

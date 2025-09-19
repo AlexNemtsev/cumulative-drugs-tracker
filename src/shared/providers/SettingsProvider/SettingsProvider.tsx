@@ -6,7 +6,8 @@ import type { Settings } from '@/shared/types/Settings';
 import { SettingsContext } from './SettingsContext';
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const defaultSettings = SettingsController.getSettings();
+  const [settings, setSettings] = useState<Settings | null>(defaultSettings);
 
   const getSettings = useCallback(() => {
     const lsSettings = SettingsController.getSettings();

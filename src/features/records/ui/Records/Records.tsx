@@ -1,44 +1,23 @@
 import { Flex, ScrollArea, Text } from '@radix-ui/themes';
 
-import { useRecordModal } from '@/entities/record/hooks/useRecordModal';
 import { Record } from '@/entities/record/ui/Record/Record';
-import { RecordModal } from '@/entities/record/ui/RecordModal';
-import { useRecords } from '@/shared/providers/RecordsProvider';
-import { useSettings } from '@/shared/providers/SettingsProvider';
-import { AddButton } from '@/shared/ui/AddButton';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
-import { DeleteDialog, useDeleteDialog } from './DeleteDialog';
 import { recordsClass } from './Records.css';
 
-export const Records = () => {
-  const { records, deleteRecord, updateRecord, addRecord } = useRecords();
-  const { settings } = useSettings();
-  const {
-    closeRecordModal,
-    handleRecord,
-    isRecordModalOpened,
-    openRecordModal,
-    openRecordModalToEdit,
-    recordToChange,
-  } = useRecordModal({
-    addRecord,
-    editRecord: updateRecord,
-  });
+type Props = {
+  dayRecords: Required<DoseRecord>[];
+};
 
-  const { closeDeleteModal, handleDeleteRecord, isDeleteDialogOpened, openDeleteModal } =
-    useDeleteDialog(deleteRecord);
+export const Records = (props: Props) => {
+  const { dayRecords } = props;
 
   return (
-    <Flex direction="column" gap="5">
-      {records.length ? (
+    <Flex direction="column" gap="5" mt="2">
+      {dayRecords.length ? (
         <ScrollArea type="scroll" className={recordsClass}>
-          {records.map((record) => (
-            <Record
-              key={record.id}
-              record={record}
-              onDelete={openDeleteModal}
-              onEdit={openRecordModalToEdit}
-            />
+          {dayRecords.map((record) => (
+            <Record key={record.id} record={record} />
           ))}
         </ScrollArea>
       ) : (
@@ -46,19 +25,6 @@ export const Records = () => {
           Записей нет
         </Text>
       )}
-      <RecordModal
-        isOpen={isRecordModalOpened}
-        onSubmit={handleRecord}
-        onCancel={closeRecordModal}
-        record={recordToChange}
-        dayTargetDose={settings?.dayTarget ?? '0'}
-      />
-      <DeleteDialog
-        onDelete={handleDeleteRecord}
-        isOpen={isDeleteDialogOpened}
-        onCancel={closeDeleteModal}
-      />
-      <AddButton onClick={openRecordModal} />
     </Flex>
   );
 };

@@ -3,33 +3,54 @@ import { openDB, type IDBPDatabase } from 'idb';
 import type { ReactNode } from 'react';
 import type { MockInstance } from 'vitest';
 
-import type { RecordType } from '@/shared/types/Record';
+import { withProviders } from '@/app/providers';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 import { records } from 'tests/mocks/records';
+import { settings } from 'tests/mocks/settings';
 
+import type { DBRecord } from './lib/DBController';
 import { useRecords } from './useRecords';
-import { ErrorDialogProvider } from '../ErrorDialogProvider';
-import { RecordsProvider } from './RecordsProvider';
+
+const WrapperComponent = ({ children }: { children: ReactNode }) => <>{children}</>;
+const WrapperComponentWithProviders = withProviders(WrapperComponent);
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
-  <ErrorDialogProvider>
-    <RecordsProvider>{children}</RecordsProvider>
-  </ErrorDialogProvider>
+  <WrapperComponentWithProviders>{children}</WrapperComponentWithProviders>
 );
 
 let mockDb: IDBPDatabase<unknown>;
 
-beforeEach(async () => {
-  mockDb = await openDB('doses');
-});
+const targetDose = '16';
 
-const testRecord: Required<RecordType> = {
-  datetime: '2025-06-07T09:21',
-  targetDose: '16',
-  dose: '16',
+const testDBRecord: Required<DBRecord> = {
   id: 1,
+  datetime: '2025-06-07T09:21',
+  dose: '16',
+  targetDose,
 };
 
+const testDoseRecord: Required<DoseRecord> = {
+  id: testDBRecord.id,
+  dose: testDBRecord.dose,
+  targetDose: testDBRecord.targetDose,
+  date: new Date(testDBRecord.datetime),
+  time: testDBRecord.datetime.split('T')[1],
+};
+
+beforeEach(async () => {
+  mockDb = await openDB('doses');
+  localStorage.setItem('settings', JSON.stringify({ ...settings, dayTarget: targetDose }));
+});
+
 const testError = 'test error';
+
+const mappedRecords = records.map((record) => ({
+  id: record.id,
+  date: new Date(record.datetime),
+  time: record.datetime.split('T')[1],
+  dose: record.dose,
+  targetDose: record.targetDose,
+}));
 
 describe('Хук useRecords', () => {
   it('Возвращает все записи из бд', async () => {
@@ -41,7 +62,7 @@ describe('Хук useRecords', () => {
 
     await waitFor(() => {
       expect(mockDb.getAll).toHaveBeenCalledWith('records');
-      expect(result.current.records).toEqual(records);
+      expect(result.current.records).toEqual(mappedRecords);
     });
   });
 
@@ -52,12 +73,14 @@ describe('Хук useRecords', () => {
       },
     } = renderHook(useRecords, { wrapper: Wrapper });
 
+    const { id, ...omittedRecord } = testDBRecord;
+
     act(() => {
-      addRecord(testRecord);
+      addRecord(testDoseRecord);
     });
 
     await waitFor(() => {
-      expect(mockDb.add).toHaveBeenCalledWith('records', testRecord);
+      expect(mockDb.add).toHaveBeenCalledWith('records', omittedRecord);
     });
   });
 
@@ -69,11 +92,11 @@ describe('Хук useRecords', () => {
     } = renderHook(useRecords, { wrapper: Wrapper });
 
     act(() => {
-      updateRecord(testRecord);
+      updateRecord(testDoseRecord);
     });
 
     await waitFor(() => {
-      expect(mockDb.put).toHaveBeenCalledWith('records', testRecord);
+      expect(mockDb.put).toHaveBeenCalledWith('records', testDBRecord);
     });
   });
 
@@ -131,7 +154,7 @@ describe('Хук useRecords', () => {
     } = renderHook(useRecords, { wrapper: Wrapper });
 
     act(() => {
-      addRecord(testRecord);
+      addRecord(testDoseRecord);
     });
 
     await waitFor(() => {
@@ -149,7 +172,7 @@ describe('Хук useRecords', () => {
     } = renderHook(useRecords, { wrapper: Wrapper });
 
     act(() => {
-      addRecord(testRecord);
+      addRecord(testDoseRecord);
     });
 
     await waitFor(() => {
@@ -167,7 +190,7 @@ describe('Хук useRecords', () => {
     } = renderHook(useRecords, { wrapper: Wrapper });
 
     act(() => {
-      updateRecord(testRecord);
+      updateRecord(testDoseRecord);
     });
 
     await waitFor(() => {
@@ -185,7 +208,7 @@ describe('Хук useRecords', () => {
     } = renderHook(useRecords, { wrapper: Wrapper });
 
     act(() => {
-      updateRecord(testRecord);
+      updateRecord(testDoseRecord);
     });
 
     await waitFor(() => {

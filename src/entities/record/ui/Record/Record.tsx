@@ -1,40 +1,62 @@
-import { Box, ContextMenu, Flex, Separator } from '@radix-ui/themes';
+import { Box, ContextMenu as Menu } from '@radix-ui/themes';
+import { useState } from 'react';
 
-import type { RecordType } from '@/shared/types/Record';
+import { DeleteDialog } from '@/entities/record/ui/DeleteDialog';
+import { useRecords } from '@/shared/providers/RecordsProvider';
+import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { Content } from './Content';
-import { contextMenuOption } from './Record.css';
+import { RecordModal } from '../RecordModal';
+import { ContextMenu } from './ContextMenu';
+import type { FormValue } from '../RecordForm';
 
 type Props = {
-  record: Required<RecordType>;
-  onEdit: (record: Required<RecordType>) => void;
-  onDelete: (recordId: number) => void;
+  record: Required<DoseRecord>;
 };
 
 export const Record = (props: Props) => {
-  const { record, onEdit, onDelete } = props;
+  const { record } = props;
 
-  const onEditHandler = () => onEdit(record);
-  const onDeleteHandler = () => onDelete(record.id);
+  const { updateRecord, deleteRecord } = useRecords();
+  const [isRecordModalOpened, setIsRecordModalOpened] = useState(false);
+  const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
+
+  const handleUpdateSubmit = async (updatedRecord: FormValue) => {
+    await updateRecord({ ...updatedRecord, id: record.id, date: record.date });
+    setIsRecordModalOpened(false);
+  };
+
+  const handleDeleteRecord = async () => {
+    await deleteRecord(record.id);
+    setIsDeleteDialogOpened(false);
+  };
 
   return (
-    <ContextMenu.Root>
-      <ContextMenu.Trigger>
+    <Menu.Root>
+      <Menu.Trigger>
         <Box>
-          <Content record={record} />
+          <Content time={record.time} dose={record.dose} />
         </Box>
-      </ContextMenu.Trigger>
-      <ContextMenu.Content size="2">
-        <Flex direction="column" gap="1">
-          <ContextMenu.Item onSelect={onEditHandler} className={contextMenuOption}>
-            Изменить
-          </ContextMenu.Item>
-          <Separator size="4" />
-          <ContextMenu.Item onSelect={onDeleteHandler} className={contextMenuOption}>
-            Удалить
-          </ContextMenu.Item>
-        </Flex>
-      </ContextMenu.Content>
-    </ContextMenu.Root>
+      </Menu.Trigger>
+      <ContextMenu
+        onChangeSelect={() => setIsRecordModalOpened(true)}
+        onDeleteSelect={() => setIsDeleteDialogOpened(true)}
+      />
+      {isRecordModalOpened && (
+        <RecordModal
+          onSubmit={handleUpdateSubmit}
+          onCancel={() => setIsRecordModalOpened(false)}
+          isOpen={isRecordModalOpened}
+          record={record}
+        />
+      )}
+      {isDeleteDialogOpened && (
+        <DeleteDialog
+          onDelete={handleDeleteRecord}
+          isOpen={isDeleteDialogOpened}
+          onCancel={() => setIsDeleteDialogOpened(false)}
+        />
+      )}
+    </Menu.Root>
   );
 };

@@ -1,36 +1,21 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppSettings } from '@/shared/appSettings';
-import { toDateTimeLocal } from '@/shared/lib/toDateTimeLocal';
-import type { RecordType } from '@/shared/types/Record';
-import { settings } from 'tests/mocks/settings';
 
-import { RecordModal, type RecordModalProps } from './RecordModal';
+import { RecordModal } from './RecordModal';
+import type { FormValue } from '../RecordForm';
+import { getCurrentTime } from './getCurrentTime';
 
 const handleCancel = vi.fn();
 const handleSubmit = vi.fn();
 
-const dayTargetDose = settings.dayTarget;
-
-const testRecord: RecordType = {
+const testRecord: FormValue = {
   dose: AppSettings.DOSES[0],
-  targetDose: dayTargetDose,
-  datetime: '2025-06-11T15:48',
+  time: '15:48',
 };
 
-const setup = (props?: Pick<RecordModalProps, 'record'>) => {
-  const { record } = props ?? {};
-
-  return render(
-    <RecordModal
-      isOpen
-      onCancel={handleCancel}
-      onSubmit={handleSubmit}
-      record={record}
-      dayTargetDose={dayTargetDose}
-    />
-  );
-};
+const setup = (record?: FormValue) =>
+  render(<RecordModal isOpen onCancel={handleCancel} onSubmit={handleSubmit} record={record} />);
 
 describe('RecordModal', () => {
   beforeEach(async () => {
@@ -41,7 +26,7 @@ describe('RecordModal', () => {
     vi.useRealTimers();
   });
 
-  it('должна отрисоваться', () => {
+  it('отрисовывается', () => {
     setup();
 
     const modal = screen.getByRole('dialog', {
@@ -65,8 +50,8 @@ describe('RecordModal', () => {
     expect(cancelButton).toBeInTheDocument();
   });
 
-  it('должна заполнять форму переданными данными', async () => {
-    setup({ record: testRecord });
+  it('заполняет форму переданными данными', async () => {
+    setup(testRecord);
 
     const modal = screen.getByRole('dialog', {
       name: /изменить запись/i,
@@ -85,11 +70,10 @@ describe('RecordModal', () => {
     expect(handleSubmit).toHaveBeenCalledWith(testRecord);
   });
 
-  it('должна заполнять форму данными по-умолчанию, если данные не переданы', async () => {
-    const defaultRecord: RecordType = {
+  it('заполняет форму данными по-умолчанию, если данные не переданы', async () => {
+    const defaultRecord: FormValue = {
       dose: AppSettings.DEFAULT_DOSE,
-      targetDose: dayTargetDose,
-      datetime: toDateTimeLocal(new Date()),
+      time: getCurrentTime(),
     };
 
     setup();

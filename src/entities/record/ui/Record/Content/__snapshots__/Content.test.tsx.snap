@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Content должен отрисоваться 1`] = `
+exports[`Content > отрисовывается 1`] = `
 <div
   class="rt-Box Content_container__gyj8v0"
   data-testid="record-content"
@@ -8,11 +8,6 @@ exports[`Content должен отрисоваться 1`] = `
   <div
     class="rt-Flex rt-r-fd-column rt-r-gap-2"
   >
-    <span
-      class="rt-Text rt-r-size-6 rt-r-weight-medium"
-    >
-      11.06.2025
-    </span>
     <div
       class="rt-Flex rt-r-jc-space-between"
     >

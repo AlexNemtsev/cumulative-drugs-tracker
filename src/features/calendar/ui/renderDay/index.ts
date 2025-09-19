@@ -1,0 +1,1 @@
+export { renderDay } from './renderDay';

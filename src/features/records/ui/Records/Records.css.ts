@@ -5,6 +5,6 @@ import { container } from '@/shared/styles/container.css';
 export const recordsClass = style([
   container,
   {
-    height: '50dvh',
+    maxHeight: '240px',
   },
 ]);

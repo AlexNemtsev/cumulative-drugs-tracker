@@ -131,6 +131,7 @@ export default tseslint.config(
       'react/require-default-props': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-key': 'error',
+      'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -159,6 +160,13 @@ export default tseslint.config(
     files: ['./tests/helpers/renderWithForm.tsx'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    files: ['./src/shared/providers/RecordsProvider/useRecords.test.tsx'],
+    rules: {
+      'react/jsx-no-useless-fragment': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   }
 );

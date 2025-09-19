@@ -13,6 +13,20 @@ export default defineConfig({
       manifest: {
         theme_color: '#F7F9FF',
         lang: 'ru',
+        name: 'Трекер дозировок',
+        short_name: 'Трекер',
+        icons: [
+          {
+            src: '/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: '/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
       },
     }),
     vanillaExtractPlugin(),
