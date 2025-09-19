@@ -17,12 +17,12 @@ export default defineConfig({
         short_name: 'Трекер',
         icons: [
           {
-            src: '/icon-192x192.png',
+            src: '/icon-192x192-v2.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icon-512x512.png',
+            src: '/icon-512x512-v2.png',
             sizes: '512x512',
             type: 'image/png',
           },
