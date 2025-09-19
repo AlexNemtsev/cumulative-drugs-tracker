@@ -28,6 +28,10 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        cacheId: 'cumulative-drugs-tracker-v2',
+        cleanupOutdatedCaches: true,
+      },
     }),
     vanillaExtractPlugin(),
     tsconfigPaths(),
