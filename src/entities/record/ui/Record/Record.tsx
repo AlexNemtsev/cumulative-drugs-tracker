@@ -6,9 +6,9 @@ import { useRecords } from '@/shared/providers/RecordsProvider';
 import type { DoseRecord } from '@/shared/types/DoseRecord';
 
 import { Content } from './Content';
+import type { FormValue } from '../RecordForm';
 import { RecordModal } from '../RecordModal';
 import { ContextMenu } from './ContextMenu';
-import type { FormValue } from '../RecordForm';
 
 type Props = {
   record: Required<DoseRecord>;

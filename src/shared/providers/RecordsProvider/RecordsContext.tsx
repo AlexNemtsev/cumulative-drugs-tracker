@@ -8,6 +8,8 @@ type Records = {
   updateRecord: (record: Omit<Required<DoseRecord>, 'targetDose'>) => Promise<void>;
   deleteRecord: (recordId: number) => Promise<void>;
   loadRecords: () => Promise<void>;
+  createBackup: () => Promise<void>;
+  restoreBackup: (backup: File) => Promise<void>;
 };
 
 export const RecordsContext = createContext<Records | undefined>(undefined);
