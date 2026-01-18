@@ -2,14 +2,17 @@ import { Form, Submit } from '@radix-ui/react-form';
 import { Button, Flex } from '@radix-ui/themes';
 
 import { SettingsKeys } from '@/pages/Settings/constants/settingsKeys';
+import { useRecords } from '@/shared/providers/RecordsProvider';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
 import { useForm } from './hooks/useForm';
 import { InputField } from './ui/InputField';
 import { InputNumber } from './ui/InputNumber';
+import { Upload } from './ui/Upload';
 
 export const Settings = () => {
   const { handleChange, handleSubmit, registerInputRef, handleInvalid, handleReset } = useForm();
+  const { createBackup, restoreBackup } = useRecords();
 
   return (
     <Flex direction="column" gap="5">
@@ -69,6 +72,12 @@ export const Settings = () => {
           </Flex>
         </Flex>
       </Form>
+      <Flex mt="7" gap="5" direction="column" align="center">
+        <Button size="4" onClick={createBackup}>
+          Создать резервную копию
+        </Button>
+        <Upload onChange={restoreBackup} />
+      </Flex>
     </Flex>
   );
 };

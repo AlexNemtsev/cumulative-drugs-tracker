@@ -95,8 +95,43 @@ export const RecordsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const createBackup = useCallback(async () => {
+    try {
+      await DBController.exportToJSON();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showError(error.message);
+      } else {
+        showError('Ошибка создания резервной копии');
+      }
+    }
+  }, []);
+
+  const restoreBackup = useCallback(async (backup: File) => {
+    try {
+      await DBController.importFromJSON(backup);
+      await loadRecords();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showError(error.message);
+      } else {
+        showError(
+          'Ошибка восстановления из резервной копии. Возможно, файл поврежден или имеет неверный формат.'
+        );
+      }
+    }
+  }, []);
+
   const recordsValue = useMemo(
-    () => ({ records, addRecord, updateRecord, deleteRecord, loadRecords }),
+    () => ({
+      records,
+      addRecord,
+      updateRecord,
+      deleteRecord,
+      loadRecords,
+      createBackup,
+      restoreBackup,
+    }),
     [records]
   );
 

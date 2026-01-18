@@ -8,6 +8,14 @@ export type DBRecord = {
   targetDose: string;
 };
 
+export type DosesBackup = {
+  meta: {
+    version: 1;
+    exportedAt: string;
+  };
+  records: DBRecord[];
+};
+
 interface DosesDB extends DBSchema {
   records: {
     key: number;
@@ -74,5 +82,67 @@ export class DBController {
   static async deleteRecord(recordId: number) {
     const db = await DBController.getDb();
     await db.delete('records', recordId);
+  }
+
+  static async exportToJSON() {
+    const records = await DBController.getRecords();
+
+    const backup: DosesBackup = {
+      meta: {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+      },
+      records,
+    };
+
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `doses-backup-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  private static validateBackup(data: DosesBackup) {
+    if (!data?.meta || data.meta.version !== 1) {
+      throw new Error('Неподдерживаемая версия бэкапа');
+    }
+
+    if (!Array.isArray(data.records)) {
+      throw new Error('Некорректный формат данных');
+    }
+  }
+
+  static async importFromJSON(file: File) {
+    const text = await file.text();
+    const data = JSON.parse(text) as DosesBackup;
+
+    DBController.validateBackup(data);
+
+    const db = await DBController.getDb();
+    const tx = db.transaction('records', 'readwrite');
+    const store = tx.objectStore('records');
+    const index = store.index('by-datetime');
+
+    await Promise.all(
+      data.records.map(async (incoming) => {
+        const existing = await index.get(incoming.datetime);
+
+        if (!existing) {
+          const { datetime, dose, targetDose } = incoming;
+          await store.add({ datetime, dose, targetDose });
+        } else {
+          await store.put({
+            ...existing,
+            ...incoming,
+            id: existing.id,
+          });
+        }
+      })
+    );
+
+    await tx.done;
   }
 }
